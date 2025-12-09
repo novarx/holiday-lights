@@ -2,7 +2,9 @@
   "name": "@workspaces/source",
   "version": "0.0.0",
   "license": "MIT",
-  "scripts": {},
+  "scripts": {
+    "serve": "nx serve emulator"
+  },
   "private": true,
   "dependencies": {
     "@angular/common": "~20.3.0",

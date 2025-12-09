@@ -1,36 +1,9 @@
 import {Injectable} from '@angular/core';
 import {IImageService} from './image.interfaces';
 import {Matrix, Matrix64x64} from './matrix';
-
-export abstract class Imager {
-
-    public static randomColorValue() {
-        return Math.floor(Math.random() * 256);
-    }
-
-    public static randomColor(): string {
-        return this.color();
-    }
-
-    public static color(
-        red: number = this.randomColorValue(),
-        green: number = this.randomColorValue(),
-        blue: number = this.randomColorValue(),
-    ) {
-        return `rgb(${red}, ${(green)}, ${blue})`;
-    }
-
-    abstract getMatrix(frame: number, previousMatrix: Matrix | null): Matrix64x64;
-}
-
-export class RandomImage extends Imager {
-    getMatrix(frame: number, previousMatrix: Matrix | null): Matrix64x64 {
-        return new Matrix64x64((x, y) => ({
-            color: Imager.randomColor(),
-            brightness: 255 * (x / 64)
-        }))
-    }
-}
+import {RandomImage} from "./imager/randomImage";
+import {TriangleImage} from "./imager/triangleImage";
+import {ImageFileImager} from "./imager/imageFileImager";
 
 @Injectable({
     providedIn: 'root'
@@ -39,12 +12,12 @@ export class ImageService implements IImageService {
 
     private readonly images = {
         random: new RandomImage(),
+        triangle: new TriangleImage(30, 30),
+        imageFile: new ImageFileImager('bubblegum.png', 64, 64),
     }
 
 
     getMatrix(frame: number, previousMatrix: Matrix | null): Matrix64x64 {
-        return this.images.random.getMatrix(frame, previousMatrix);
+        return this.images.imageFile.getMatrix(frame, previousMatrix);
     }
-
 }
-
