@@ -1,5 +1,5 @@
 import { Imager } from './imager';
-import { Matrix, Matrix64x64 } from '../matrix';
+import { Matrix } from '../matrix';
 import { ImageToMatrixConverter } from './imageToMatrixConverter';
 
 /**
@@ -7,6 +7,8 @@ import { ImageToMatrixConverter } from './imageToMatrixConverter';
  */
 export class ImageFileImager extends Imager {
   private converter: ImageToMatrixConverter;
+  private readonly maxWidth: number;
+  private readonly maxHeight: number;
 
   /**
    * Creates an ImageFileImager that loads an image from the specified path.
@@ -20,11 +22,18 @@ export class ImageFileImager extends Imager {
     maxHeight: number = 64
   ) {
     super();
+    this.maxWidth = maxWidth;
+    this.maxHeight = maxHeight;
     this.converter = new ImageToMatrixConverter(imagePath, maxWidth, maxHeight);
   }
 
-  getMatrix(frame: number, previousMatrix: Matrix | null): Matrix64x64 {
-    return new Matrix64x64((x, y) => {
+  getMatrix(frame: number, previousMatrix: Matrix | null): Matrix {
+    // Get the actual scaled dimensions from the converter
+    const dimensions = this.converter.getScaledDimensions();
+    const width = dimensions.width || this.maxWidth;
+    const height = dimensions.height || this.maxHeight;
+
+    return new Matrix(width, height, (x, y) => {
       const pixelColor = this.converter.getPixelColor(x, y);
 
       if (pixelColor) {

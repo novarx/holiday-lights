@@ -38,18 +38,22 @@ export class TextImager extends Imager {
     }
 
     // Set font - approximate font size based on desired height
-    // Font size is typically 1.2-1.5x the actual rendered height
-    const fontSize = Math.round(this.height * 1.3);
+    const fontSize = Math.round(this.height);
     ctx.font = `${fontSize}px ${this.fontFamily}`;
 
     // Measure the text to determine canvas size
     const metrics = ctx.measureText(this.text);
     const textWidth = Math.ceil(metrics.width);
-    const textHeight = this.height;
 
-    // Set canvas size to fit the text
-    canvas.width = textWidth;
-    canvas.height = textHeight;
+    // Use font metrics for more accurate height calculation
+    const actualHeight = Math.ceil(
+      (metrics.actualBoundingBoxAscent || fontSize * 0.8) +
+      (metrics.actualBoundingBoxDescent || fontSize * 0.2)
+    );
+
+    // Set canvas size with some padding to ensure we capture all pixels
+    canvas.width = textWidth + 4;
+    canvas.height = actualHeight + 4;
 
     // Re-set font after canvas resize (canvas reset clears settings)
     ctx.font = `${fontSize}px ${this.fontFamily}`;
@@ -59,16 +63,47 @@ export class TextImager extends Imager {
     // Fill with transparent background
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    // Draw the text
+    // Draw the text with slight padding
     ctx.fillStyle = this.color;
-    ctx.fillText(this.text, 0, 0);
+    ctx.fillText(this.text, 2, 2);
 
     // Extract pixel data
-    const imageData = ctx.getImageData(0, 0, textWidth, textHeight);
+    const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
 
-    // Create matrix from pixel data
-    this.textMatrix = new Matrix(textWidth, textHeight, (x, y) => {
-      const index = (y * textWidth + x) * 4;
+    // Find the actual bounding box of non-transparent pixels
+    let minX = canvas.width, maxX = 0;
+    let minY = canvas.height, maxY = 0;
+
+    for (let y = 0; y < canvas.height; y++) {
+      for (let x = 0; x < canvas.width; x++) {
+        const index = (y * canvas.width + x) * 4;
+        const alpha = imageData.data[index + 3];
+        if (alpha > 128) {
+          minX = Math.min(minX, x);
+          maxX = Math.max(maxX, x);
+          minY = Math.min(minY, y);
+          maxY = Math.max(maxY, y);
+        }
+      }
+    }
+
+    // If no pixels found, create minimal matrix
+    if (minX > maxX) {
+      this.textMatrix = new Matrix(1, 1, () => ({
+        color: Imager.color(0, 0, 0),
+        brightness: 255
+      }));
+      return;
+    }
+
+    // Create matrix from the trimmed bounding box
+    const trimmedWidth = maxX - minX + 1;
+    const trimmedHeight = maxY - minY + 1;
+
+    this.textMatrix = new Matrix(trimmedWidth, trimmedHeight, (x, y) => {
+      const sourceX = x + minX;
+      const sourceY = y + minY;
+      const index = (sourceY * canvas.width + sourceX) * 4;
       const r = imageData.data[index];
       const g = imageData.data[index + 1];
       const b = imageData.data[index + 2];

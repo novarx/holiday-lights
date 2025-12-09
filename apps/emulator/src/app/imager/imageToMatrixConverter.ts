@@ -88,21 +88,47 @@ export class ImageToMatrixConverter {
       return null;
     }
 
-    // Calculate position in the scaled image (accounting for centering offset)
-    const imageX = x - this.offsetX;
-    const imageY = y - this.offsetY;
-
     // Check if pixel is within the image bounds
-    if (imageX < 0 || imageX >= this.scaledWidth || imageY < 0 || imageY >= this.scaledHeight) {
+    if (x < 0 || x >= this.scaledWidth || y < 0 || y >= this.scaledHeight) {
       return null;
     }
 
-    const index = (imageY * this.scaledWidth + imageX) * 4;
+    const index = (y * this.scaledWidth + x) * 4;
     const r = this.imageData.data[index];
     const g = this.imageData.data[index + 1];
     const b = this.imageData.data[index + 2];
 
     return [r, g, b];
+  }
+
+  /**
+   * Checks if the image has been loaded successfully.
+   * @returns true if the image is loaded, false otherwise
+   */
+  isImageLoaded(): boolean {
+    return this.isLoaded;
+  }
+
+  /**
+   * Gets the scaled dimensions of the image.
+   * @returns Object with width and height of the scaled image
+   */
+  getScaledDimensions(): { width: number; height: number } {
+    return {
+      width: this.scaledWidth,
+      height: this.scaledHeight
+    };
+  }
+
+  /**
+   * Gets the offset values used to center the image.
+   * @returns Object with x and y offsets
+   */
+  getOffsets(): { x: number; y: number } {
+    return {
+      x: this.offsetX,
+      y: this.offsetY
+    };
   }
 }
 
