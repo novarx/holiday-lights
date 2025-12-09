@@ -1,8 +1,11 @@
-import {Component, ViewEncapsulation, inject, OnInit, OnDestroy} from '@angular/core';
-import {CommonModule} from '@angular/common';
-import {ImageService} from './image.service';
-import {Cell} from './image.interfaces';
-import {Matrix} from './matrix';
+import { Component, ViewEncapsulation, inject, OnInit, OnDestroy } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { Subscription } from 'rxjs';
+import { ImageService } from './image.service';
+import { AnimationController } from './animation';
+import { applyBrightness } from './utils';
+import { Cell } from './image.interfaces';
+import { Matrix } from './matrix';
 
 @Component({
   selector: 'app-nx-welcome',
@@ -12,36 +15,25 @@ import {Matrix} from './matrix';
   encapsulation: ViewEncapsulation.None,
 })
 export class Emulator implements OnInit, OnDestroy {
-  private imageService = inject(ImageService);
-  private intervalId?: number;
-  private frame = 0;
+  private readonly imageService = inject(ImageService);
+  private readonly animationController = inject(AnimationController);
+  private subscription?: Subscription;
 
-  public matrix: Matrix = this.imageService.getMatrix(0, null);
+  matrix: Matrix = this.imageService.getMatrix(0, null);
 
   ngOnInit(): void {
-    this.intervalId = window.setInterval(() => {
-      this.frame = (this.frame + 1) % 100; // 0-99 for 10 seconds (100 frames * 100ms)
-      this.matrix = this.imageService.getMatrix(this.frame, this.matrix);
-    }, 100);
+    this.subscription = this.animationController.frame$.subscribe(frame => {
+      this.matrix = this.imageService.getMatrix(frame, this.matrix);
+    });
+    this.animationController.start();
   }
 
   ngOnDestroy(): void {
-    if (this.intervalId !== undefined) {
-      clearInterval(this.intervalId);
-    }
+    this.subscription?.unsubscribe();
+    this.animationController.stop();
   }
 
   getCellColor(cell: Cell): string {
-    if (cell.brightness === 255) {
-      return cell.color;
-    }
-
-    // Parse RGB string and convert to RGBA with brightness as alpha
-    const match = cell.color.match(/rgb\((\d+),\s*(\d+),\s*(\d+)\)/);
-    if (match) {
-      const alpha = cell.brightness / 255;
-      return `rgba(${match[1]}, ${match[2]}, ${match[3]}, ${alpha})`;
-    }
-    return cell.color;
+    return applyBrightness(cell.color, cell.brightness);
   }
 }

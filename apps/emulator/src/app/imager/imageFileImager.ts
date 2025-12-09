@@ -1,14 +1,13 @@
 import { Imager } from './imager';
 import { Matrix } from '../matrix';
 import { ImageToMatrixConverter } from './imageToMatrixConverter';
+import { rgb } from '../utils/color.utils';
 
 /**
  * Imager that loads and displays an image file, scaled to fit within the matrix dimensions.
  */
-export class ImageFileImager extends Imager {
-  private converter: ImageToMatrixConverter;
-  private readonly maxWidth: number;
-  private readonly maxHeight: number;
+export class ImageFileImager implements Imager {
+  private readonly converter: ImageToMatrixConverter;
 
   /**
    * Creates an ImageFileImager that loads an image from the specified path.
@@ -18,17 +17,13 @@ export class ImageFileImager extends Imager {
    */
   constructor(
     imagePath: string,
-    maxWidth: number = 64,
-    maxHeight: number = 64
+    private readonly maxWidth: number = 64,
+    private readonly maxHeight: number = 64
   ) {
-    super();
-    this.maxWidth = maxWidth;
-    this.maxHeight = maxHeight;
     this.converter = new ImageToMatrixConverter(imagePath, maxWidth, maxHeight);
   }
 
   getMatrix(frame: number, previousMatrix: Matrix | null): Matrix {
-    // Get the actual scaled dimensions from the converter
     const dimensions = this.converter.getScaledDimensions();
     const width = dimensions.width || this.maxWidth;
     const height = dimensions.height || this.maxHeight;
@@ -38,17 +33,10 @@ export class ImageFileImager extends Imager {
 
       if (pixelColor) {
         const [r, g, b] = pixelColor;
-        return {
-          color: Imager.color(r, g, b),
-          brightness: 255
-        };
-      } else {
-        // Image not loaded or pixel outside bounds - show black
-        return {
-          color: Imager.color(0, 0, 0),
-          brightness: 255
-        };
+        return { color: rgb(r, g, b), brightness: 255 };
       }
+
+      return { color: rgb(0, 0, 0), brightness: 255 };
     });
   }
 }

@@ -1,19 +1,10 @@
-import { Matrix } from './matrix';
-
+/**
+ * Represents a single cell (pixel) in the LED matrix.
+ */
 export interface Cell {
+  /** RGB color string in format "rgb(r, g, b)" */
   color: string;
+  /** Brightness value from 0 (off) to 255 (full) */
   brightness: number;
 }
 
-/**
- * Service interface for generating matrix images.
- */
-export interface IImageService {
-  /**
-   * Generates a matrix for the current frame.
-   * @param frame - The current frame number (0-99, representing 100ms intervals over 10 seconds)
-   * @param previousMatrix - The matrix from the previous frame, or null for the first frame
-   * @returns A new matrix representing the current frame's image
-   */
-  getMatrix(frame: number, previousMatrix: Matrix | null): Matrix;
-}

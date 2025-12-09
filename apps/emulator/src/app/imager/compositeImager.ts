@@ -16,7 +16,7 @@ interface PositionedImager {
  * Composite imager that combines multiple imagers at specified positions.
  * Imagers are layered in the order they are added (later ones render on top).
  */
-export class CompositeImager extends Imager {
+export class CompositeImager implements Imager {
   private layers: PositionedImager[] = [];
 
   /**
@@ -29,9 +29,7 @@ export class CompositeImager extends Imager {
     private readonly width: number = 64,
     private readonly height: number = 64,
     private readonly backgroundColor: string = 'rgb(0, 0, 0)'
-  ) {
-    super();
-  }
+  ) {}
 
   /**
    * Adds an imager at the specified position.
