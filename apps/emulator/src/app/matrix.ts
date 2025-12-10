@@ -1,25 +1,22 @@
-import {Cell} from './image.interfaces';
+import { Cell } from './image.interfaces';
+import { Dimensions } from './utils';
 
-type CellInitializer = (x: number, y: number) => Cell
-
+type CellInitializer = (x: number, y: number) => Cell;
 
 export class Matrix {
   private cells: Cell[][];
-  public readonly width: number;
-  public readonly height: number;
+  public readonly dimensions: Dimensions;
 
   /**
    * Creates a new matrix with the specified dimensions.
-   * @param width - The width of the matrix
-   * @param height - The height of the matrix
+   * @param dimensions - The dimensions of the matrix
    * @param initializer - Optional function to initialize cells at each position
    */
-  constructor(width: number, height: number, initializer?: (x: number, y: number) => Cell) {
-    this.width = width;
-    this.height = height;
-    this.cells = Array.from({length: height}, (_, y) =>
-      Array.from({length: width}, (_, x) =>
-        initializer ? initializer(x, y) : {color: 'rgb(0, 0, 0)', brightness: 255}
+  constructor(dimensions: Dimensions, initializer?: CellInitializer) {
+    this.dimensions = dimensions;
+    this.cells = Array.from({ length: dimensions.height }, (_, y) =>
+      Array.from({ length: dimensions.width }, (_, x) =>
+        initializer ? initializer(x, y) : { color: 'rgb(0, 0, 0)', brightness: 255 }
       )
     );
   }
@@ -31,7 +28,7 @@ export class Matrix {
    * @returns The cell at (x, y) or undefined if out of bounds
    */
   get(x: number, y: number): Cell | undefined {
-    if (x < 0 || x >= this.width || y < 0 || y >= this.height) {
+    if (x < 0 || x >= this.dimensions.width || y < 0 || y >= this.dimensions.height) {
       return undefined;
     }
     return this.cells[y][x];
@@ -45,7 +42,7 @@ export class Matrix {
    * @returns true if successful, false if out of bounds
    */
   set(x: number, y: number, cell: Cell): boolean {
-    if (x < 0 || x >= this.width || y < 0 || y >= this.height) {
+    if (x < 0 || x >= this.dimensions.width || y < 0 || y >= this.dimensions.height) {
       return false;
     }
     this.cells[y][x] = cell;
@@ -113,7 +110,7 @@ export class Matrix {
       row.forEach((_, x) => {
         this.cells[y][x] = typeof cellOrInitializer === 'function'
           ? cellOrInitializer(x, y)
-          : {...cellOrInitializer};
+          : { ...cellOrInitializer };
       });
     });
   }
@@ -121,6 +118,6 @@ export class Matrix {
 
 export class Matrix64x64 extends Matrix {
   constructor(initializer?: CellInitializer) {
-    super(64, 64, initializer);
+    super(Dimensions.square(64), initializer);
   }
 }

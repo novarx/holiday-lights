@@ -1,78 +1,99 @@
+import {Coordinates, Dimensions} from '../utils';
+
 /**
- * Position types for placing imagers in a composite.
+ * Interface for position calculators.
  */
+export abstract class Position {
+  /**
+   * Calculates the actual x, y coordinates.
+   * @param container - Dimensions of the container
+   * @param element - Dimensions of the element being positioned
+   */
+  abstract calculate(container: Dimensions, element: Dimensions): Coordinates;
+
+
+  /**
+   * Creates a static position at specific coordinates.
+   */
+  static static(x: number, y: number): StaticPosition {
+    return new StaticPosition(x, y);
+  }
+
+  /**
+   * Creates a horizontally centered position with a y offset.
+   */
+  static centerHorizontal(y: number): CenterHorizontalPosition {
+    return new CenterHorizontalPosition(y);
+  }
+
+  /**
+   * Creates a vertically centered position with an x offset.
+   */
+  static centerVertical(x: number): CenterVerticalPosition {
+    return new CenterVerticalPosition(x);
+  }
+
+  /**
+   * Creates a fully centered position.
+   */
+  static center(): CenterPosition {
+    return new CenterPosition();
+  }
+}
 
 /**
  * Static position with explicit x and y coordinates.
  */
-export interface StaticPosition {
-  type: 'static';
-  x: number;
-  y: number;
+export class StaticPosition extends Position {
+  constructor(
+    private readonly x: number,
+    private readonly y: number
+  ) {
+    super();
+  }
+
+  calculate(): Coordinates {
+    return {x: this.x, y: this.y};
+  }
 }
 
 /**
- * Horizontally centered position with y coordinate.
+ * Horizontally centered position with fixed y coordinate.
  */
-export interface CenterHorizontalPosition {
-  type: 'centerHorizontal';
-  y: number;
+export class CenterHorizontalPosition extends Position {
+  constructor(private readonly y: number) {
+    super();
+  }
+
+  calculate(container: Dimensions, element: Dimensions): Coordinates {
+    return {
+      x: Math.floor((container.width - element.width) / 2),
+      y: this.y
+    };
+  }
 }
 
 /**
- * Vertically centered position with x coordinate.
+ * Vertically centered position with fixed x coordinate.
  */
-export interface CenterVerticalPosition {
-  type: 'centerVertical';
-  x: number;
+export class CenterVerticalPosition extends Position {
+  constructor(private readonly x: number) {
+    super();
+  }
+
+  calculate(container: Dimensions, element: Dimensions): Coordinates {
+    return {
+      x: this.x,
+      y: Math.floor((container.height - element.height) / 2)
+    };
+  }
 }
 
 /**
  * Fully centered position (both x and y).
  */
-export interface CenterPosition {
-  type: 'center';
-}
-
-/**
- * Union type of all position types.
- */
-export type Position = StaticPosition | CenterHorizontalPosition | CenterVerticalPosition | CenterPosition;
-
-/**
- * Helper functions to create positions.
- */
-export const Position = {
-  /**
-   * Creates a static position at specific coordinates.
-   * @param x - X coordinate
-   * @param y - Y coordinate
-   */
-  static(x: number, y: number): StaticPosition {
-    return { type: 'static', x, y };
-  },
-
-  /**
-   * Creates a horizontally centered position with a y offset.
-   * @param y - Y coordinate
-   */
-  centerHorizontal(y: number): CenterHorizontalPosition {
-    return { type: 'centerHorizontal', y };
-  },
-
-  /**
-   * Creates a vertically centered position with an x offset.
-   * @param x - X coordinate
-   */
-  centerVertical(x: number): CenterVerticalPosition {
-    return { type: 'centerVertical', x };
-  },
-
-  /**
-   * Creates a fully centered position (both x and y).
-   */
-  center(): CenterPosition {
-    return { type: 'center' };
+export class CenterPosition extends Position {
+  calculate(container: Dimensions, element: Dimensions): Coordinates {
+    return container.centerOffset(element);
   }
-};
-
+}

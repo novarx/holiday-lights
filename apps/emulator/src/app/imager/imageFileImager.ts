@@ -1,7 +1,7 @@
 import { Imager } from './imager';
 import { Matrix } from '../matrix';
 import { ImageToMatrixConverter } from './imageToMatrixConverter';
-import { rgb } from '../utils/color.utils';
+import { rgb, Dimensions } from '../utils';
 
 /**
  * Imager that loads and displays an image file, scaled to fit within the matrix dimensions.
@@ -12,23 +12,19 @@ export class ImageFileImager implements Imager {
   /**
    * Creates an ImageFileImager that loads an image from the specified path.
    * @param imagePath - Path to the image file
-   * @param maxWidth - Maximum width to scale the image (default: 64)
-   * @param maxHeight - Maximum height to scale the image (default: 64)
+   * @param maxDimensions - Maximum dimensions to scale the image (default: 64x64)
    */
   constructor(
     imagePath: string,
-    private readonly maxWidth: number = 64,
-    private readonly maxHeight: number = 64
+    private readonly maxDimensions: Dimensions = Dimensions.square(64)
   ) {
-    this.converter = new ImageToMatrixConverter(imagePath, maxWidth, maxHeight);
+    this.converter = new ImageToMatrixConverter(imagePath, maxDimensions);
   }
 
   getMatrix(frame: number, previousMatrix: Matrix | null): Matrix {
-    const dimensions = this.converter.getScaledDimensions();
-    const width = dimensions.width || this.maxWidth;
-    const height = dimensions.height || this.maxHeight;
+    const dimensions = this.converter.getScaledDimensions() ?? this.maxDimensions;
 
-    return new Matrix(width, height, (x, y) => {
+    return new Matrix(dimensions, (x, y) => {
       const pixelColor = this.converter.getPixelColor(x, y);
 
       if (pixelColor) {

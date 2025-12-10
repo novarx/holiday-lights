@@ -1,6 +1,6 @@
 import { Imager } from './imager';
 import { Matrix } from '../matrix';
-import { rgb } from '../utils/color.utils';
+import { rgb, Dimensions } from '../utils';
 
 /**
  * Imager that renders text as a bitmap using canvas text rendering.
@@ -67,14 +67,13 @@ export class TextImager implements Imager {
     const bounds = this.findTextBounds(imageData, canvasWidth, canvasHeight);
 
     if (!bounds) {
-      return new Matrix(1, 1, () => ({ color: rgb(0, 0, 0), brightness: 255 }));
+      return new Matrix(new Dimensions(1, 1), () => ({ color: rgb(0, 0, 0), brightness: 255 }));
     }
 
     const { minX, maxX, minY, maxY } = bounds;
-    const trimmedWidth = maxX - minX + 1;
-    const trimmedHeight = maxY - minY + 1;
+    const dimensions = new Dimensions(maxX - minX + 1, maxY - minY + 1);
 
-    return new Matrix(trimmedWidth, trimmedHeight, (x, y) => {
+    return new Matrix(dimensions, (x, y) => {
       const sourceX = x + minX;
       const sourceY = y + minY;
       const index = (sourceY * canvasWidth + sourceX) * 4;
@@ -119,7 +118,7 @@ export class TextImager implements Imager {
 
   getMatrix(frame: number, previousMatrix: Matrix | null): Matrix {
     if (!this.textMatrix) {
-      return new Matrix(1, 1, () => ({ color: rgb(0, 0, 0), brightness: 255 }));
+      return new Matrix(new Dimensions(1, 1), () => ({ color: rgb(0, 0, 0), brightness: 255 }));
     }
 
     return this.textMatrix;

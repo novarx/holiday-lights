@@ -1,12 +1,14 @@
 import { Imager } from './imager';
-import { Matrix, Matrix64x64 } from '../matrix';
-import { rgb } from '../utils/color.utils';
+import { Matrix } from '../matrix';
+import { rgb, Dimensions } from '../utils';
 
 export class RandomImage implements Imager {
-  getMatrix(frame: number, previousMatrix: Matrix | null): Matrix64x64 {
-    return new Matrix64x64((x, y) => ({
+  constructor(private readonly dimensions: Dimensions = Dimensions.square(64)) {}
+
+  getMatrix(frame: number, previousMatrix: Matrix | null): Matrix {
+    return new Matrix(this.dimensions, (x) => ({
       color: rgb(),
-      brightness: 255 * (x / 64)
+      brightness: 255 * (x / this.dimensions.width)
     }));
   }
 }
