@@ -37,13 +37,6 @@
       "plugin": "@nx/jest/plugin",
       "options": {
         "targetName": "test"
-      },
-      "exclude": ["apps/holiday-lights-service-e2e/**/*"]
-    },
-    {
-      "plugin": "@nx/playwright/plugin",
-      "options": {
-        "targetName": "e2e"
       }
     }
   ],
@@ -56,7 +49,6 @@
   },
   "generators": {
     "@nx/angular:application": {
-      "e2eTestRunner": "playwright",
       "linter": "eslint",
       "style": "scss",
       "unitTestRunner": "jest"
