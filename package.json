@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
-    "serve": "nx serve emulator"
+    "serve": "nx run-many serve"
   },
   "private": true,
   "dependencies": {
@@ -20,7 +20,8 @@
     "axios": "^1.6.0",
     "reflect-metadata": "^0.1.13",
     "rxjs": "^7.8.0",
-    "zone.js": "~0.15.0"
+    "zone.js": "~0.15.0",
+    "rpi-led-matrix": "1.15.0"
   },
   "devDependencies": {
     "@angular-devkit/core": "~20.3.0",

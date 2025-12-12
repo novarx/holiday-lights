@@ -1,6 +1,4 @@
-import { Imager } from './imager';
-import { Matrix } from '../matrix';
-import { rgb, Dimensions } from '../utils';
+import { Imager, Matrix, rgb, Dimensions } from '@holiday-lights/imager-core';
 
 /**
  * Imager that renders text as a bitmap using canvas text rendering.

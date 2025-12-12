@@ -3,9 +3,7 @@ import { CommonModule } from '@angular/common';
 import { Subscription } from 'rxjs';
 import { ImageService } from './image.service';
 import { AnimationController } from './animation';
-import { applyBrightness } from './utils';
-import { Cell } from './image.interfaces';
-import { Matrix } from './matrix';
+import { applyBrightness, Cell, Matrix } from '@holiday-lights/imager-core';
 
 @Component({
   selector: 'app-nx-welcome',

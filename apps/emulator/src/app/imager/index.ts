@@ -1,13 +1,17 @@
-export * from './imager';
-export * from './compositeImager';
-export * from './imageFileImager';
-export * from './textImager';
-export * from './randomImage';
+// Re-export core types from shared library
 export {
-  Position, StaticPosition,
+  CompositeImager,
+  RandomImage,
+  Position,
+  StaticPosition,
   CenterPosition,
   CenterHorizontalPosition,
   CenterVerticalPosition
-} from './position';
+} from '@holiday-lights/imager-core';
+export type { Imager } from '@holiday-lights/imager-core';
+
+// Browser-specific imagers
+export * from './imageFileImager';
+export * from './textImager';
 export * from './imageToMatrixConverter';
 

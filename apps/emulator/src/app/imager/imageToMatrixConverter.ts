@@ -1,4 +1,4 @@
-import { Dimensions, Coordinates } from '../utils';
+import { Dimensions, Coordinates } from '@holiday-lights/imager-core';
 
 /**
  * Converts an image file to a matrix representation with pixel color data.

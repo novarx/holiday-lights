@@ -1,7 +1,5 @@
-import { Imager } from './imager';
-import { Matrix } from '../matrix';
+import { Imager, Matrix, rgb, Dimensions } from '@holiday-lights/imager-core';
 import { ImageToMatrixConverter } from './imageToMatrixConverter';
-import { rgb, Dimensions } from '../utils';
 
 /**
  * Imager that loads and displays an image file, scaled to fit within the matrix dimensions.

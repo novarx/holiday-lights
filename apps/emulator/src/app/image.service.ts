@@ -1,7 +1,6 @@
 import {Injectable} from '@angular/core';
-import {Matrix} from './matrix';
-import {CompositeImager, ImageFileImager, Imager, Position, RandomImage, TextImager} from './imager';
-import {Dimensions} from './utils';
+import {Matrix, CompositeImager, Imager, Position, RandomImage, Dimensions} from '@holiday-lights/imager-core';
+import {ImageFileImager, TextImager} from './imager';
 
 /**
  * Service that provides matrix images for the emulator display.
