@@ -1,12 +1,5 @@
-import { Injectable } from '@nestjs/common';
-import {
-  Matrix,
-  Imager,
-  CompositeImager,
-  RandomImage,
-  Position,
-  Dimensions
-} from '@holiday-lights/imager-core';
+import {Injectable} from '@nestjs/common';
+import {CompositeImager, Dimensions, Imager, Position, RandomImage} from '@holiday-lights/imager-core';
 import {LedMatrix} from "rpi-led-matrix";
 import {matrixOptions, runtimeOptions} from './_config';
 
@@ -20,6 +13,22 @@ export class MatrixService {
     Position.center()
   );
 
+  /**
+   * Converts an RGB color string to a hex number.
+   * @param rgbString - Color string in format "rgb(r, g, b)"
+   * @returns Hex number (e.g., 0x0000ff for blue)
+   */
+  private rgbToHex(rgbString: string): number {
+    const match = rgbString.match(/rgb\((\d+),\s*(\d+),\s*(\d+)\)/);
+    if (!match) {
+      return 0x000000;
+    }
+    const r = parseInt(match[1], 10);
+    const g = parseInt(match[2], 10);
+    const b = parseInt(match[3], 10);
+    return (r << 16) | (g << 8) | b;
+  }
+
   async initMatrix(): Promise<void> {
     const matrixDefinition = this.imager.getMatrix(1, null);
 
@@ -27,68 +36,14 @@ export class MatrixService {
 
     matrix
       .clear() // clear the display
-      .brightness(100) // set the panel brightness to 100%
-      .fgColor(0x0000ff) // set the active color to blue
-      .fill() // color the entire diplay blue
-      .fgColor(0xffff00) // set the active color to yellow
-      // draw a yellow circle around the display
-      .drawCircle(
-        matrix.width() / 2,
-        matrix.height() / 2,
-        matrix.width() / 2 - 1
-      )
-      // draw a yellow rectangle
-      .drawRect(
-        matrix.width() / 4,
-        matrix.height() / 4,
-        matrix.width() / 2,
-        matrix.height() / 2
-      )
-      // sets the active color to red
-      .fgColor({ r: 255, g: 0, b: 0 })
-      // draw two diagonal red lines connecting the corners
-      .drawLine(0, 0, matrix.width(), matrix.height())
-      .drawLine(matrix.width() - 1, 0, 0, matrix.height() - 1);
+      .brightness(100)
+      .fgColor(0x000000)
+      .fill()
+
+    matrixDefinition.forEach((cell, x, y) => {
+      matrix.fgColor(this.rgbToHex(cell.color)).setPixel(x, y)
+    })
 
     matrix.sync();
   }
 }
-
-// const wait = (t: number) => new Promise(ok => setTimeout(ok, t));
-//
-// (async () => {
-//   try {
-//     const matrix = new LedMatrix(matrixOptions, runtimeOptions);
-//
-//     matrix
-//       .clear() // clear the display
-//       .brightness(100) // set the panel brightness to 100%
-//       .fgColor(0x0000ff) // set the active color to blue
-//       .fill() // color the entire diplay blue
-//       .fgColor(0xffff00) // set the active color to yellow
-//       // draw a yellow circle around the display
-//       .drawCircle(
-//         matrix.width() / 2,
-//         matrix.height() / 2,
-//         matrix.width() / 2 - 1
-//       )
-//       // draw a yellow rectangle
-//       .drawRect(
-//         matrix.width() / 4,
-//         matrix.height() / 4,
-//         matrix.width() / 2,
-//         matrix.height() / 2
-//       )
-//       // sets the active color to red
-//       .fgColor({ r: 255, g: 0, b: 0 })
-//       // draw two diagonal red lines connecting the corners
-//       .drawLine(0, 0, matrix.width(), matrix.height())
-//       .drawLine(matrix.width() - 1, 0, 0, matrix.height() - 1);
-//
-//     matrix.sync();
-//
-//     await wait(999999999);
-//   } catch (error) {
-//     console.error(`${__filename} caught: `, error);
-//   }
-// })();
