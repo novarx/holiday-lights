@@ -1,12 +1,9 @@
-import type { Imager } from '../model/imager';
-import { SceneRegistry } from './sceneRegistry';
+import type { Imager } from '../lib/model/imager';
+import { SceneRegistry } from '../lib/main/sceneRegistry';
 
 // Import all scenes to trigger their registration
 // The scenes will self-register when their modules are loaded
-import '../../scenes/bubblegum.scene';
-import '../../scenes/default.scene';
-import '../../scenes/random.scene';
-import '../../scenes/text.scene';
+import './default.scene';
 
 /**
  * Centralized loader for all scenes defined in imager-core.

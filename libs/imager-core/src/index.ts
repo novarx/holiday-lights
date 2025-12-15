@@ -22,12 +22,9 @@ export * from './lib/imagers/textImager';
 // Scene loader
 export * from './lib/main/sceneLoader';
 export * from './lib/main/sceneRegistry';
-export * from './lib/main/allScenesLoader';
+export * from './scenes/allScenesLoader';
 
 
 // Scenes
-export * from './scenes/bubblegum.scene';
-export * from './scenes/random.scene';
 export * from './scenes/default.scene';
-export * from './scenes/text.scene';
 
