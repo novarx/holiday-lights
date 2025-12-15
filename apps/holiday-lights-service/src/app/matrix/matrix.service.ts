@@ -37,7 +37,7 @@ export class MatrixService {
     matrix
       .clear() // clear the display
       .brightness(100)
-      .fgColor(0x000000)
+      .fgColor(0xff0000)
       .fill()
 
     matrixDefinition.forEach((cell, x, y) => {
