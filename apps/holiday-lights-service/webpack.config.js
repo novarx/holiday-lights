@@ -73,7 +73,7 @@ module.exports = {
       allowlist: [/@holiday-lights\/imager-core/],
     }),
     'rpi-led-matrix',
-    'canvas',
+    'sharp',
   ],
   plugins: [
     new CopyPlugin({

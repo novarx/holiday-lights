@@ -1,0 +1,11 @@
+{
+  "watch": ["../../dist/apps/holiday-lights-service"],
+  "ext": "js",
+  "delay": 1000,
+  "ignore": ["*.test.js", "*.spec.js"],
+  "verbose": false,
+  "execMap": {
+    "js": "node"
+  }
+}
+

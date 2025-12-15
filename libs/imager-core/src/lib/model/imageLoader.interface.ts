@@ -24,5 +24,11 @@ export interface ImageLoader {
    * @returns Promise resolving to the loaded and scaled image data
    */
   loadImage(imagePath: string, maxDimensions: Dimensions): Promise<RawImageData>;
+
+  /**
+   * Sets the base path for resolving relative image paths.
+   * @param basePath - The base directory path for assets
+   */
+  setBasePath?(basePath: string): void;
 }
 

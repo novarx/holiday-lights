@@ -14,6 +14,7 @@ export class TextImager implements Imager {
   private readonly height: number;
   private readonly fontFamily: string;
   private readonly color: string;
+  private renderPromise: Promise<void> | null = null;
 
   /**
    * Creates a TextImager that displays the specified text.
@@ -32,16 +33,17 @@ export class TextImager implements Imager {
     this.height = height;
     this.fontFamily = fontFamily;
     this.color = color;
-    this.renderText();
+    // Start rendering immediately but don't block constructor
+    this.renderPromise = this.renderText();
   }
 
   /**
    * Renders the text using the platform text renderer.
    */
-  private renderText(): void {
+  private async renderText(): Promise<void> {
     try {
       const textRenderer = getTextRenderer();
-      const result = textRenderer.renderText(
+      const result = await textRenderer.renderText(
         this.text,
         Math.round(this.height),
         this.fontFamily,

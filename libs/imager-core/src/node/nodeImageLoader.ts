@@ -1,6 +1,7 @@
 import type { Dimensions } from '../lib/model/dimensions';
 import type { ImageLoader, RawImageData } from '../lib/model/imageLoader.interface';
 import { join, isAbsolute } from 'path';
+import {kernel, KernelEnum, OutputInfo} from "sharp";
 
 /**
  * Node.js-specific implementation of ImageLoader using sharp.
@@ -61,7 +62,9 @@ export class NodeImageLoader implements ImageLoader {
 
     const { data, info } = await image
       .resize(scaledDimensions.width, scaledDimensions.height, {
-        fit: 'fill',
+        fit: 'contain',
+        // withoutReduction: true,
+        // kernel: kernel.cubic
       })
       .raw()
       .ensureAlpha()

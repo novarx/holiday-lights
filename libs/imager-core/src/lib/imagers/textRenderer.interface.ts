@@ -21,13 +21,14 @@ export interface TextRenderer {
    * @param fontSize - Font size in pixels
    * @param fontFamily - Font family to use
    * @param color - Text color as CSS color string
-   * @returns The rendered text as pixel data
+   * @returns The rendered text as pixel data (may be async for node implementations)
    */
   renderText(
     text: string,
     fontSize: number,
     fontFamily: string,
     color: string
-  ): TextRenderResult;
+  ): TextRenderResult | Promise<TextRenderResult>;
 }
+
 

@@ -1,49 +1,66 @@
 import type { TextRenderer, TextRenderResult } from '../lib/imagers/textRenderer.interface';
 
 /**
- * Node.js-specific implementation of TextRenderer using node-canvas.
- * Note: Requires 'canvas' package to be installed as a dependency.
+ * Node.js-specific implementation of TextRenderer using sharp with SVG text.
+ * Note: Requires 'sharp' package to be installed as a dependency.
  */
 export class NodeTextRenderer implements TextRenderer {
   /**
-   * Renders text to pixel data using node-canvas.
+   * Renders text to pixel data using sharp with SVG text rendering.
    */
-  renderText(
+  async renderText(
     text: string,
     fontSize: number,
     fontFamily: string,
     color: string
-  ): TextRenderResult {
-    // Dynamic require to avoid bundling canvas in browser builds
+  ): Promise<TextRenderResult> {
+    // Dynamic require to avoid bundling sharp in browser builds
     // eslint-disable-next-line @typescript-eslint/no-require-imports
-    const { createCanvas } = require('canvas');
+    const sharp = require('sharp');
 
-    // Create a temporary canvas to measure text
-    const measureCanvas = createCanvas(1, 1);
-    const measureCtx = measureCanvas.getContext('2d');
+    // Estimate text dimensions (approximate - 0.6 chars per pixel width for monospace-ish fonts)
+    const estimatedCharWidth = fontSize * 0.6;
+    const textWidth = Math.ceil(text.length * estimatedCharWidth) + 10;
+    const textHeight = Math.ceil(fontSize * 1.5) + 10;
 
-    measureCtx.font = `${fontSize}px ${fontFamily}`;
-    const metrics = measureCtx.measureText(text);
-    const textWidth = Math.ceil(metrics.width);
-    const actualHeight = Math.ceil(fontSize * 1.2);
+    // Create SVG with text
+    const svg = `
+      <svg width="${textWidth}" height="${textHeight}" xmlns="http://www.w3.org/2000/svg">
+        <text
+          x="5"
+          y="${fontSize + 2}"
+          font-family="${fontFamily}"
+          font-size="${fontSize}"
+          fill="${color}"
+        >${text}</text>
+      </svg>
+    `;
 
-    // Create the actual canvas with proper dimensions
-    const canvas = createCanvas(textWidth + 4, actualHeight + 4);
-    const ctx = canvas.getContext('2d');
+    try {
+      // Convert SVG to raw pixel data
+      const { data, info } = await sharp(Buffer.from(svg))
+        .ensureAlpha()
+        .raw()
+        .toBuffer({ resolveWithObject: true });
 
-    ctx.font = `${fontSize}px ${fontFamily}`;
-    ctx.textBaseline = 'top';
-    ctx.textAlign = 'left';
-    ctx.fillStyle = color;
-    ctx.fillText(text, 2, 2);
+      return {
+        data: new Uint8ClampedArray(data),
+        width: info.width,
+        height: info.height,
+      };
+    } catch (error) {
+      console.error('Failed to render text with sharp:', error);
+      // Fallback: create a minimal image
+      const fallbackWidth = textWidth;
+      const fallbackHeight = textHeight;
+      const fallbackData = new Uint8ClampedArray(fallbackWidth * fallbackHeight * 4);
 
-    const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-
-    return {
-      data: new Uint8ClampedArray(imageData.data),
-      width: canvas.width,
-      height: canvas.height,
-    };
+      return {
+        data: fallbackData,
+        width: fallbackWidth,
+        height: fallbackHeight,
+      };
+    }
   }
 }
 
