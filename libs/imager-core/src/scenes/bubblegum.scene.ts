@@ -7,6 +7,7 @@ import {
   ImageFileImager,
   TextImager,
 } from '@holiday-lights/imager-core';
+import { SceneRegistry } from '../lib/main/sceneRegistry';
 
 /**
  * Bubblegum image scene with centered image and label.
@@ -33,4 +34,7 @@ export class BubblegumScene implements Imager {
     return this.imager.getMatrix(frame, previousMatrix);
   }
 }
+
+// Self-register this scene
+SceneRegistry.register(() => new BubblegumScene());
 

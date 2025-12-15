@@ -6,6 +6,7 @@ import {
   type Matrix,
   TextImager,
 } from '@holiday-lights/imager-core';
+import { SceneRegistry } from '../lib/main/sceneRegistry';
 
 /**
  * Text-focused scene with "Hello World" message.
@@ -32,4 +33,7 @@ export class TextScene implements Imager {
     return this.imager.getMatrix(frame, previousMatrix);
   }
 }
+
+// Self-register this scene
+SceneRegistry.register(() => new TextScene());
 

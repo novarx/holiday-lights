@@ -1,12 +1,16 @@
 import type { Imager } from '../model/imager';
-import { BubblegumScene } from '../../scenes/bubblegum.scene';
-import { DefaultScene } from '../../scenes/default.scene';
-import { RandomScene } from '../../scenes/random.scene';
-import { TextScene } from '../../scenes/text.scene';
+import { SceneRegistry } from './sceneRegistry';
+
+// Import all scenes to trigger their registration
+// The scenes will self-register when their modules are loaded
+import '../../scenes/bubblegum.scene';
+import '../../scenes/default.scene';
+import '../../scenes/random.scene';
+import '../../scenes/text.scene';
 
 /**
  * Centralized loader for all scenes defined in imager-core.
- * This eliminates the need for platform-specific module loading.
+ * Uses SceneRegistry for dynamic scene loading - scenes self-register at module load time.
  */
 export class AllScenesLoader {
   private readonly imagers: Imager[];
@@ -23,37 +27,11 @@ export class AllScenesLoader {
   }
 
   /**
-   * Loads and instantiates all available scenes.
+   * Loads all registered scenes from the SceneRegistry.
    */
   private loadAllScenes(): Imager[] {
-    const scenes: Imager[] = [];
-
-    // Instantiate each scene with default parameters
-    try {
-      scenes.push(new BubblegumScene());
-    } catch (error) {
-      console.warn('Failed to instantiate BubblegumScene:', error);
-    }
-
-    try {
-      scenes.push(new DefaultScene());
-    } catch (error) {
-      console.warn('Failed to instantiate DefaultScene:', error);
-    }
-
-    try {
-      scenes.push(new RandomScene());
-    } catch (error) {
-      console.warn('Failed to instantiate RandomScene:', error);
-    }
-
-    try {
-      scenes.push(new TextScene());
-    } catch (error) {
-      console.warn('Failed to instantiate TextScene:', error);
-    }
-
-    console.log(`Loaded ${scenes.length} scenes`);
+    const scenes = SceneRegistry.getAll();
+    console.log(`Loaded ${scenes.length} scenes from registry`);
     return scenes;
   }
 }

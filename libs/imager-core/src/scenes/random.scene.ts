@@ -7,6 +7,7 @@ import {
   type Matrix,
   TextImager,
 } from '@holiday-lights/imager-core';
+import { SceneRegistry } from '../lib/main/sceneRegistry';
 
 /**
  * Random pattern scene with animated random pixels.
@@ -33,4 +34,7 @@ export class RandomScene implements Imager {
     return this.imager.getMatrix(frame, previousMatrix);
   }
 }
+
+// Self-register this scene
+SceneRegistry.register(() => new RandomScene());
 

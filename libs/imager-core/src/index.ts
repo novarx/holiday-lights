@@ -20,6 +20,7 @@ export * from './lib/imagers/textImager';
 
 // Scene loader
 export * from './lib/main/sceneLoader';
+export * from './lib/main/sceneRegistry';
 export * from './lib/main/allScenesLoader';
 
 
