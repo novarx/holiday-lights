@@ -16,11 +16,13 @@ export class MultiMatrixEmulator {
   private cellElements: HTMLElement[][] = [];
   private previousColors: string[][] = [];
   private readonly maxFrames: number;
+  private cycling: boolean;
 
-  constructor(container: HTMLElement, imagers: Imager[], maxFrames: number = 100) {
+  constructor(container: HTMLElement, imagers: Imager[], maxFrames: number = 100, cycling: boolean = true) {
     this.container = container;
     this.imagers = imagers;
     this.maxFrames = maxFrames;
+    this.cycling = cycling;
     this.animationController = new AnimationController();
     this.matrix = this.getCurrentImager().getMatrix(0, null);
   }
@@ -39,8 +41,8 @@ export class MultiMatrixEmulator {
     this.render();
 
     this.unsubscribe = this.animationController.subscribe(frame => {
-      // Check if we completed a full cycle (frame wrapped to 0)
-      if (frame === 0 && this.imagers.length > 1) {
+      // Check if we completed a full cycle (frame wrapped to 0) and cycling is enabled
+      if (frame === 0 && this.cycling && this.imagers.length > 1) {
         this.advanceToNextMatrix();
       }
 
@@ -173,6 +175,31 @@ export class MultiMatrixEmulator {
       const total = this.imagers.length;
       this.matrixIndicator.textContent = `Matrix: ${current}/${total}`;
     }
+  }
+
+  /**
+   * Sets whether to cycle through scenes.
+   */
+  setCycling(enabled: boolean): void {
+    this.cycling = enabled;
+  }
+
+  /**
+   * Sets the current scene index.
+   */
+  setCurrentScene(index: number): void {
+    if (index >= 0 && index < this.imagers.length) {
+      this.currentImagerIndex = index;
+      this.matrix = this.getCurrentImager().getMatrix(0, null);
+      this.updateMatrixIndicator();
+    }
+  }
+
+  /**
+   * Gets the current scene index.
+   */
+  getCurrentSceneIndex(): number {
+    return this.currentImagerIndex;
   }
 }
 
