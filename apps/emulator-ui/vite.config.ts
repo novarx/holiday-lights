@@ -3,6 +3,7 @@ import { resolve } from 'path';
 import { copyFileSync, mkdirSync, readdirSync, existsSync } from 'fs';
 
 export default defineConfig({
+  base: './',
   resolve: {
     alias: {
       '@holiday-lights/imager-core/browser': resolve(__dirname, '../../libs/imager-core/src/browser/index.ts'),

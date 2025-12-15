@@ -7,7 +7,6 @@ import { MultiImageService } from './multi-image.service';
 import { Router } from './router';
 
 // Configure platform-specific implementations
-// Use the assets folder that Vite copies to the public directory
 configurePlatform({
   imageLoader: new BrowserImageLoader('/assets'),
   textRenderer: new BrowserTextRenderer(),
