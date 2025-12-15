@@ -7,6 +7,10 @@ npm install
 npm run serve:emulator
 ```
 
+or go to
+
+[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/~/github.com/novarx/holiday-lights?file=libs/imager-core/src/scenes/default.scene.ts)
+
 ## Creating a New Scene
 
 1. **Copy the DefaultScene**: Duplicate `libs/imager-core/src/scenes/default.scene.ts` and rename it to your scene name (e.g., `my-scene.ts`)
