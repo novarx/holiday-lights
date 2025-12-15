@@ -7,9 +7,13 @@
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
     "target": "es2021",
-    "moduleResolution": "node"
+    "moduleResolution": "node",
+    "baseUrl": ".",
+    "paths": {
+      "@holiday-lights/imager-core": ["../../libs/imager-core/src/index.ts"]
+    }
   },
-  "include": ["src/**/*.ts"],
+  "include": ["src/**/*.ts", "../../libs/imager-core/src/**/*.ts"],
   "exclude": [
     "jest.config.ts",
     "jest.config.cts",
