@@ -3,7 +3,6 @@ import { configurePlatform } from '@holiday-lights/imager-core';
 import { BrowserImageLoader, BrowserTextRenderer } from '@holiday-lights/imager-core/browser';
 import { MultiMatrixEmulator } from './multi-matrix-emulator';
 import { MultiImageService } from './multi-image.service';
-import { Router } from './router';
 
 // Configure platform-specific implementations
 configurePlatform({
@@ -13,135 +12,124 @@ configurePlatform({
 
 const app = document.querySelector<HTMLDivElement>('#app')!;
 
-const router = new Router(app);
+const multiImageService = new MultiImageService();
+const allScenes = multiImageService.getAllScenes();
 
-router.addRoute({
-  path: '/',
-  title: 'Matrix Slideshow',
-  render: (container) => {
-    const multiImageService = new MultiImageService();
-    const allScenes = multiImageService.getAllScenes();
+// Create main layout container
+const mainLayout = document.createElement('div');
+mainLayout.className = 'main-layout';
 
-    // Create controls container
-    const controlsContainer = document.createElement('div');
-    controlsContainer.className = 'scene-controls';
+// Create emulator container (left side)
+const emulatorContainer = document.createElement('div');
+emulatorContainer.className = 'emulator-container';
+mainLayout.appendChild(emulatorContainer);
 
-    // Create cycling toggle
-    const cyclingContainer = document.createElement('div');
-    cyclingContainer.className = 'control-group';
+// Create controls container (right side)
+const controlsContainer = document.createElement('div');
+controlsContainer.className = 'scene-controls';
 
-    const cyclingLabel = document.createElement('label');
-    cyclingLabel.className = 'control-label';
+// Create collapsible header
+const controlsHeader = document.createElement('div');
+controlsHeader.className = 'controls-header';
 
-    const cyclingCheckbox = document.createElement('input');
-    cyclingCheckbox.type = 'checkbox';
-    cyclingCheckbox.id = 'cycling-toggle';
-    cyclingCheckbox.checked = true;
+const controlsTitle = document.createElement('div');
+controlsTitle.className = 'controls-title';
+controlsTitle.textContent = 'Select Scenes';
 
-    const cyclingText = document.createElement('span');
-    cyclingText.textContent = 'Auto-cycle scenes';
+const toggleButton = document.createElement('button');
+toggleButton.className = 'toggle-button';
+toggleButton.textContent = '▼';
+toggleButton.setAttribute('aria-label', 'Toggle scene selection');
 
-    cyclingLabel.appendChild(cyclingCheckbox);
-    cyclingLabel.appendChild(cyclingText);
-    cyclingContainer.appendChild(cyclingLabel);
+controlsHeader.appendChild(controlsTitle);
+controlsHeader.appendChild(toggleButton);
 
-    // Create scene selection
-    const sceneContainer = document.createElement('div');
-    sceneContainer.className = 'control-group';
+// Create collapsible content
+const controlsContent = document.createElement('div');
+controlsContent.className = 'controls-content';
 
-    const sceneLabel = document.createElement('div');
-    sceneLabel.className = 'control-label';
-    sceneLabel.textContent = 'Select scenes:';
-    sceneContainer.appendChild(sceneLabel);
+const sceneCheckboxes = document.createElement('div');
+sceneCheckboxes.className = 'scene-checkboxes';
 
-    const sceneCheckboxes = document.createElement('div');
-    sceneCheckboxes.className = 'scene-checkboxes';
+// Initialize with only "Default" scene selected
+const selectedScenes = new Set<string>();
+const defaultScene = allScenes.find(s => s.name === 'Default');
+if (defaultScene) {
+  selectedScenes.add(defaultScene.id);
+}
 
-    const selectedScenes = new Set<string>(allScenes.map(s => s.id));
+allScenes.forEach(scene => {
+  const checkboxLabel = document.createElement('label');
+  checkboxLabel.className = 'scene-checkbox-label';
 
-    allScenes.forEach(scene => {
-      const checkboxLabel = document.createElement('label');
-      checkboxLabel.className = 'scene-checkbox-label';
+  const checkbox = document.createElement('input');
+  checkbox.type = 'checkbox';
+  checkbox.value = scene.id;
+  checkbox.checked = scene.name === 'Default';
+  checkbox.className = 'scene-checkbox';
 
-      const checkbox = document.createElement('input');
-      checkbox.type = 'checkbox';
-      checkbox.value = scene.id;
-      checkbox.checked = true;
-      checkbox.className = 'scene-checkbox';
+  const labelText = document.createElement('span');
+  labelText.textContent = scene.name;
 
-      const labelText = document.createElement('span');
-      labelText.textContent = scene.name;
+  checkboxLabel.appendChild(checkbox);
+  checkboxLabel.appendChild(labelText);
+  sceneCheckboxes.appendChild(checkboxLabel);
 
-      checkboxLabel.appendChild(checkbox);
-      checkboxLabel.appendChild(labelText);
-      sceneCheckboxes.appendChild(checkboxLabel);
-
-      checkbox.addEventListener('change', () => {
-        if (checkbox.checked) {
-          selectedScenes.add(scene.id);
-        } else {
-          selectedScenes.delete(scene.id);
-        }
-        updateEmulator();
-      });
-    });
-
-    sceneContainer.appendChild(sceneCheckboxes);
-
-    controlsContainer.appendChild(cyclingContainer);
-    controlsContainer.appendChild(sceneContainer);
-    container.appendChild(controlsContainer);
-
-    // Create emulator container
-    const emulatorContainer = document.createElement('div');
-    emulatorContainer.className = 'emulator-container';
-    container.appendChild(emulatorContainer);
-
-    let emulator: MultiMatrixEmulator;
-
-    const updateEmulator = () => {
-      // Stop current emulator if running
-      if (emulator) {
-        emulator.stop();
-      }
-
-      // Get selected imagers
-      const selectedIds = Array.from(selectedScenes);
-      const imagers = multiImageService.getImagers(selectedIds.length > 0 ? selectedIds : []);
-
-      if (imagers.length === 0) {
-        emulatorContainer.innerHTML = '<div class="no-scenes">Please select at least one scene</div>';
-        return;
-      }
-
-      // Create new emulator with selected scenes and cycling setting
-      emulator = new MultiMatrixEmulator(
-        emulatorContainer,
-        imagers,
-        100,
-        cyclingCheckbox.checked
-      );
-      emulator.start();
-    };
-
-    cyclingCheckbox.addEventListener('change', () => {
-      if (emulator) {
-        emulator.setCycling(cyclingCheckbox.checked);
-      }
-    });
-
-    // Initialize emulator
+  checkbox.addEventListener('change', () => {
+    if (checkbox.checked) {
+      selectedScenes.add(scene.id);
+    } else {
+      selectedScenes.delete(scene.id);
+    }
     updateEmulator();
-
-    return {
-      stop: () => {
-        if (emulator) {
-          emulator.stop();
-        }
-      }
-    };
-  }
+  });
 });
 
-router.start();
+controlsContent.appendChild(sceneCheckboxes);
+
+// Toggle collapse/expand functionality
+let isCollapsed = false;
+toggleButton.addEventListener('click', () => {
+  isCollapsed = !isCollapsed;
+  controlsContent.classList.toggle('collapsed', isCollapsed);
+  toggleButton.textContent = isCollapsed ? '▶' : '▼';
+});
+
+controlsContainer.appendChild(controlsHeader);
+controlsContainer.appendChild(controlsContent);
+mainLayout.appendChild(controlsContainer);
+
+app.appendChild(mainLayout);
+
+let emulator: MultiMatrixEmulator;
+
+const updateEmulator = () => {
+  // Stop current emulator if running
+  if (emulator) {
+    emulator.stop();
+  }
+
+  // Get selected imagers
+  const selectedIds = Array.from(selectedScenes);
+  const imagers = multiImageService.getImagers(selectedIds.length > 0 ? selectedIds : []);
+
+  if (imagers.length === 0) {
+    emulatorContainer.innerHTML = '<div class="no-scenes">Please select at least one scene</div>';
+    return;
+  }
+
+  // Create new emulator with selected scenes (always cycling)
+  emulator = new MultiMatrixEmulator(
+    emulatorContainer,
+    imagers,
+    100,
+    true
+  );
+  emulator.start();
+};
+
+
+// Initialize emulator
+updateEmulator();
+
 

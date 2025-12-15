@@ -177,12 +177,6 @@ export class MultiMatrixEmulator {
     }
   }
 
-  /**
-   * Sets whether to cycle through scenes.
-   */
-  setCycling(enabled: boolean): void {
-    this.cycling = enabled;
-  }
 
   /**
    * Sets the current scene index.
