@@ -4,7 +4,7 @@
     "rootDir": ".",
     "sourceMap": true,
     "declaration": false,
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "importHelpers": true,
@@ -16,6 +16,8 @@
     "baseUrl": ".",
     "paths": {
       "@holiday-lights/imager-core": ["libs/imager-core/src/index.ts"],
+      "@holiday-lights/imager-core/browser": ["libs/imager-core/src/browser/index.ts"],
+      "@holiday-lights/imager-core/node": ["libs/imager-core/src/node/index.ts"],
       "@holiday-lights/pixelit": ["libs/pixelit/src/index.ts"]
     }
   },

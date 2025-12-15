@@ -10,7 +10,9 @@
     "moduleResolution": "node",
     "baseUrl": ".",
     "paths": {
-      "@holiday-lights/imager-core": ["../../libs/imager-core/src/index.ts"]
+      "@holiday-lights/imager-core": ["../../libs/imager-core/src/index.ts"],
+      "@holiday-lights/imager-core/browser": ["../../libs/imager-core/src/browser/index.ts"],
+      "@holiday-lights/imager-core/node": ["../../libs/imager-core/src/node/index.ts"]
     }
   },
   "include": ["src/**/*.ts", "../../libs/imager-core/src/**/*.ts"],

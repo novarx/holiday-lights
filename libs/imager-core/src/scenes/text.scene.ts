@@ -1,5 +1,11 @@
-import { CompositeImager, type Imager, Position, Dimensions, type Matrix } from '@holiday-lights/imager-core';
-import { TextImager } from '../imager';
+import {
+  CompositeImager,
+  type Imager,
+  Position,
+  Dimensions,
+  type Matrix,
+  TextImager,
+} from '@holiday-lights/imager-core';
 
 /**
  * Text-focused scene with "Hello World" message.

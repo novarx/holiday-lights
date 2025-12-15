@@ -41,6 +41,8 @@ module.exports = {
   resolve: {
     extensions: ['.ts', '.js'],
     alias: {
+      '@holiday-lights/imager-core/browser': resolve(__dirname, '../../libs/imager-core/src/browser/index.ts'),
+      '@holiday-lights/imager-core/node': resolve(__dirname, '../../libs/imager-core/src/node/index.ts'),
       '@holiday-lights/imager-core': resolve(__dirname, '../../libs/imager-core/src/index.ts'),
       './led-matrix.adapter': ledMatrixAdapter,
     },
@@ -71,6 +73,7 @@ module.exports = {
       allowlist: [/@holiday-lights\/imager-core/],
     }),
     'rpi-led-matrix',
+    'canvas',
   ],
   plugins: [
     new CopyPlugin({

@@ -1,7 +1,12 @@
-import { type Imager, Matrix, rgb, Dimensions } from '@holiday-lights/imager-core';
+import type { Imager } from './imager';
+import { Matrix } from './matrix';
+import { rgb } from './color.utils';
+import { Dimensions } from './dimensions';
+import { getTextRenderer } from './platform';
 
 /**
- * Imager that renders text as a bitmap using canvas text rendering.
+ * Imager that renders text as a bitmap.
+ * Uses the platform-configured TextRenderer for rendering text.
  */
 export class TextImager implements Imager {
   private textMatrix: Matrix | null = null;
@@ -31,46 +36,28 @@ export class TextImager implements Imager {
   }
 
   /**
-   * Renders the text to a canvas and extracts pixel data.
+   * Renders the text using the platform text renderer.
    */
   private renderText(): void {
-    const canvas = document.createElement('canvas');
-    const ctx = canvas.getContext('2d');
-
-    if (!ctx) {
-      console.error('Failed to get canvas context for text rendering');
-      return;
+    try {
+      const textRenderer = getTextRenderer();
+      const result = textRenderer.renderText(
+        this.text,
+        Math.round(this.height),
+        this.fontFamily,
+        this.color
+      );
+      this.textMatrix = this.extractTextMatrix(result.data, result.width, result.height);
+    } catch (error) {
+      console.error('Failed to render text:', error);
     }
-
-    const fontSize = Math.round(this.height);
-    ctx.font = `${fontSize}px ${this.fontFamily}`;
-
-    const metrics = ctx.measureText(this.text);
-    const textWidth = Math.ceil(metrics.width);
-    const actualHeight = Math.ceil(
-      (metrics.actualBoundingBoxAscent || fontSize * 0.8) +
-      (metrics.actualBoundingBoxDescent || fontSize * 0.2)
-    );
-
-    canvas.width = textWidth + 4;
-    canvas.height = actualHeight + 4;
-
-    ctx.font = `${fontSize}px ${this.fontFamily}`;
-    ctx.textBaseline = 'top';
-    ctx.textAlign = 'left';
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    ctx.fillStyle = this.color;
-    ctx.fillText(this.text, 2, 2);
-
-    const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-    this.textMatrix = this.extractTextMatrix(imageData, canvas.width, canvas.height);
   }
 
   /**
    * Extracts the text matrix from image data, trimming transparent pixels.
    */
-  private extractTextMatrix(imageData: ImageData, canvasWidth: number, canvasHeight: number): Matrix {
-    const bounds = this.findTextBounds(imageData, canvasWidth, canvasHeight);
+  private extractTextMatrix(data: Uint8ClampedArray, width: number, height: number): Matrix {
+    const bounds = this.findTextBounds(data, width, height);
 
     if (!bounds) {
       return new Matrix(new Dimensions(1, 1), () => ({ color: rgb(0, 0, 0), brightness: 255 }));
@@ -82,11 +69,11 @@ export class TextImager implements Imager {
     return new Matrix(dimensions, (x, y) => {
       const sourceX = x + minX;
       const sourceY = y + minY;
-      const index = (sourceY * canvasWidth + sourceX) * 4;
-      const r = imageData.data[index];
-      const g = imageData.data[index + 1];
-      const b = imageData.data[index + 2];
-      const alpha = imageData.data[index + 3];
+      const index = (sourceY * width + sourceX) * 4;
+      const r = data[index];
+      const g = data[index + 1];
+      const b = data[index + 2];
+      const alpha = data[index + 3];
 
       if (alpha > 128) {
         return { color: rgb(r, g, b), brightness: 255 };
@@ -98,14 +85,18 @@ export class TextImager implements Imager {
   /**
    * Finds the bounding box of non-transparent pixels.
    */
-  private findTextBounds(imageData: ImageData, width: number, height: number): { minX: number; maxX: number; minY: number; maxY: number } | null {
+  private findTextBounds(
+    data: Uint8ClampedArray,
+    width: number,
+    height: number
+  ): { minX: number; maxX: number; minY: number; maxY: number } | null {
     let minX = width, maxX = 0;
     let minY = height, maxY = 0;
 
     for (let y = 0; y < height; y++) {
       for (let x = 0; x < width; x++) {
         const index = (y * width + x) * 4;
-        const alpha = imageData.data[index + 3];
+        const alpha = data[index + 3];
         if (alpha > 128) {
           minX = Math.min(minX, x);
           maxX = Math.max(maxX, x);

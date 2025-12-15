@@ -1,4 +1,5 @@
-import type { Dimensions, ImageLoader, RawImageData } from '@holiday-lights/imager-core';
+import type { Dimensions } from '../lib/dimensions';
+import type { ImageLoader, RawImageData } from '../lib/imageLoader.interface';
 
 /**
  * Browser-specific implementation of ImageLoader using HTMLCanvasElement.

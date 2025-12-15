@@ -5,7 +5,15 @@
 
 import { Logger } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
+import { configurePlatform } from '@holiday-lights/imager-core';
+import { NodeImageLoader, NodeTextRenderer } from '@holiday-lights/imager-core/node';
 import { AppModule } from './app/app.module';
+
+// Configure platform-specific implementations for Node.js
+configurePlatform({
+  imageLoader: new NodeImageLoader(),
+  textRenderer: new NodeTextRenderer(),
+});
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);

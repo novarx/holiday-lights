@@ -1,5 +1,12 @@
-import { CompositeImager, type Imager, Position, Dimensions, RandomImage, type Matrix } from '@holiday-lights/imager-core';
-import { TextImager } from '../imager';
+import {
+  CompositeImager,
+  type Imager,
+  Position,
+  Dimensions,
+  RandomImage,
+  type Matrix,
+  TextImager,
+} from '@holiday-lights/imager-core';
 
 /**
  * Random pattern scene with animated random pixels.

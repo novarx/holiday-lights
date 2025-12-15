@@ -1,5 +1,13 @@
-import { Matrix, CompositeImager, type Imager, Position, Dimensions, RandomImage } from '@holiday-lights/imager-core';
-import { ImageFileImager, TextImager } from './imager';
+import {
+  Matrix,
+  CompositeImager,
+  type Imager,
+  Position,
+  Dimensions,
+  RandomImage,
+  ImageFileImager,
+  TextImager,
+} from '@holiday-lights/imager-core';
 
 /**
  * Service that provides matrix images for the emulator display.

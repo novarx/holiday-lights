@@ -1,8 +1,16 @@
 import './style.css';
+import { configurePlatform } from '@holiday-lights/imager-core';
+import { BrowserImageLoader, BrowserTextRenderer } from '@holiday-lights/imager-core/browser';
 import { Emulator } from './emulator';
 import { MultiMatrixEmulator } from './multi-matrix-emulator';
 import { MultiImageService } from './multi-image.service';
 import { Router } from './router';
+
+// Configure platform-specific implementations
+configurePlatform({
+  imageLoader: new BrowserImageLoader(),
+  textRenderer: new BrowserTextRenderer(),
+});
 
 const app = document.querySelector<HTMLDivElement>('#app')!;
 

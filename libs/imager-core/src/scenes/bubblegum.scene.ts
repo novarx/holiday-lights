@@ -1,5 +1,12 @@
-import { CompositeImager, type Imager, Position, Dimensions, type Matrix } from '@holiday-lights/imager-core';
-import { ImageFileImager, TextImager } from '../imager';
+import {
+  CompositeImager,
+  type Imager,
+  Position,
+  Dimensions,
+  type Matrix,
+  ImageFileImager,
+  TextImager,
+} from '@holiday-lights/imager-core';
 
 /**
  * Bubblegum image scene with centered image and label.
