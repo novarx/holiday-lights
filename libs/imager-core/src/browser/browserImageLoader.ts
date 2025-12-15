@@ -40,13 +40,48 @@ export class BrowserImageLoader implements ImageLoader {
 
   /**
    * Loads an image from the specified path using browser APIs.
+   * Implements fallback logic to try alternative paths if the primary path fails.
    */
   async loadImage(imagePath: string, maxDimensions: Dimensions): Promise<RawImageData> {
+    const primaryPath = this.resolvePath(imagePath);
+
+    // Try primary path first, then fallback paths
+    const pathsToTry = [primaryPath];
+
+    // Add fallback for StackBlitz: if primary is /assets/*, try /public/assets/*
+    if (primaryPath.startsWith('/assets/')) {
+      pathsToTry.push(primaryPath.replace('/assets/', '/public/assets/'));
+    }
+
+    return this.tryLoadImage(imagePath, pathsToTry, maxDimensions);
+  }
+
+  /**
+   * Attempts to load an image from multiple possible paths.
+   */
+  private async tryLoadImage(
+    originalPath: string,
+    pathsToTry: string[],
+    maxDimensions: Dimensions,
+    attemptIndex: number = 0
+  ): Promise<RawImageData> {
+    if (attemptIndex >= pathsToTry.length) {
+      throw new Error(
+        `Failed to load image: ${originalPath}. Tried paths: ${pathsToTry.join(', ')}`
+      );
+    }
+
+    const currentPath = pathsToTry[attemptIndex];
+
     return new Promise((resolve, reject) => {
       const img = new Image();
       img.crossOrigin = 'anonymous';
 
       img.onload = () => {
+        if (attemptIndex > 0) {
+          console.log(`Successfully loaded image from fallback path: ${currentPath}`);
+        }
+
         const scaledDimensions = this.calculateScaledDimensions(
           img.width,
           img.height,
@@ -74,11 +109,13 @@ export class BrowserImageLoader implements ImageLoader {
       };
 
       img.onerror = () => {
-        const resolvedPath = this.resolvePath(imagePath);
-        reject(new Error(`Failed to load image: ${imagePath} (resolved to: ${resolvedPath})`));
+        // Try next path
+        this.tryLoadImage(originalPath, pathsToTry, maxDimensions, attemptIndex + 1)
+          .then(resolve)
+          .catch(reject);
       };
 
-      img.src = this.resolvePath(imagePath);
+      img.src = currentPath;
     });
   }
 
