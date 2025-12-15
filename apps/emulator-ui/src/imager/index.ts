@@ -6,12 +6,13 @@ export {
   StaticPosition,
   CenterPosition,
   CenterHorizontalPosition,
-  CenterVerticalPosition
+  CenterVerticalPosition,
+  ImageToMatrixConverter
 } from '@holiday-lights/imager-core';
-export type { Imager } from '@holiday-lights/imager-core';
+export type { Imager, ImageLoader, RawImageData } from '@holiday-lights/imager-core';
 
 // Browser-specific imagers
 export * from './imageFileImager';
 export * from './textImager';
-export * from './imageToMatrixConverter';
+export { BrowserImageLoader } from './browserImageLoader';
 

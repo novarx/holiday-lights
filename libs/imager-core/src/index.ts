@@ -7,4 +7,6 @@ export * from './lib/imager';
 export * from './lib/position';
 export * from './lib/compositeImager';
 export * from './lib/randomImage';
+export * from './lib/imageLoader.interface';
+export * from './lib/imageToMatrixConverter';
 

@@ -10,7 +10,8 @@
     "lint": "eslint ."
   },
   "dependencies": {
-    "@holiday-lights/imager-core": "*"
+    "@holiday-lights/imager-core": "*",
+    "sharp": "^0.33.0"
   }
 }
 
