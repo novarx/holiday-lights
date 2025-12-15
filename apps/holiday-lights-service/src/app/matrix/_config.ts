@@ -1,37 +1,31 @@
 import {
   GpioMapping,
   LedMatrix,
-  LedMatrixUtils,
   MatrixOptions,
-  PixelMapperType,
+  MuxType,
   RuntimeFlag,
-  RuntimeOptions
-} from "./led-matrix.adapter";
+  RuntimeOptions,
+} from 'rpi-led-matrix';
 
 export const matrixOptions: MatrixOptions = {
   ...LedMatrix.defaultMatrixOptions(),
+  limitRefreshRateHz: 0,
   rows: 64,
   cols: 64,
-  chainLength: 2,
-  hardwareMapping: GpioMapping.Regular,
+  chainLength: 1,
   parallel: 1,
-  brightness: 100,
-  // pixelMapperConfig: LedMatrixUtils.encodeMappers(
-  //   {
-  //     type: PixelMapperType.Chainlink,
-  //   },
-  //   {
-  //     type: PixelMapperType.Rotate,
-  //     angle: 180,
-  //   }
-  // ),
+  hardwareMapping: GpioMapping.Regular,
+  multiplexing: MuxType.Direct,
+  rowAddressType: 0,
+  brightness: 20,
+  // scanMode: ScanMode.Interlaced,
 };
 
 console.log('matrix options: ', JSON.stringify(matrixOptions, null, 2));
 
 export const runtimeOptions: RuntimeOptions = {
   ...LedMatrix.defaultRuntimeOptions(),
-  gpioSlowdown: 4,
+  gpioSlowdown: 2,
   dropPrivileges: RuntimeFlag.Off,
 };
 
