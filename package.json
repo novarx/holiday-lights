@@ -12,6 +12,7 @@
     "build:emulator": "npm run build -w emulator-ui",
     "build:service": "npm run build -w @holiday-lights/holiday-lights-service",
     "build:imager-core": "npm run build -w @holiday-lights/imager-core",
+    "build:pixelit": "npm run build -w @holiday-lights/pixelit",
     "serve": "npm run serve --workspaces --if-present",
     "serve:emulator": "npm run dev -w emulator-ui",
     "serve:service": "npm run serve -w @holiday-lights/holiday-lights-service"

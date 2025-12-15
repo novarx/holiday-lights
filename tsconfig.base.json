@@ -15,7 +15,8 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@holiday-lights/imager-core": ["libs/imager-core/src/index.ts"]
+      "@holiday-lights/imager-core": ["libs/imager-core/src/index.ts"],
+      "@holiday-lights/pixelit": ["libs/pixelit/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]
