@@ -11,6 +11,9 @@ export class Emulator {
   private readonly container: HTMLElement;
   private matrix: Matrix;
   private unsubscribe?: () => void;
+  private frameCounter?: HTMLElement;
+  private cellElements: HTMLElement[][] = [];
+  private previousColors: string[][] = [];
 
   constructor(container: HTMLElement) {
     this.container = container;
@@ -28,6 +31,7 @@ export class Emulator {
     this.unsubscribe = this.animationController.subscribe(frame => {
       this.matrix = this.imageService.getMatrix(frame, this.matrix);
       this.updateCells();
+      this.updateFrameCounter(frame);
     });
 
     this.animationController.start();
@@ -53,24 +57,39 @@ export class Emulator {
    */
   private render(): void {
     this.container.innerHTML = '';
+    this.cellElements = [];
+    this.previousColors = [];
+
+    // Create frame counter
+    this.frameCounter = document.createElement('div');
+    this.frameCounter.className = 'frame-counter';
+    this.updateFrameCounter(0);
+    this.container.appendChild(this.frameCounter);
 
     const wrapper = document.createElement('div');
     wrapper.className = 'wrapper';
 
     const rows = this.matrix.getRows();
-    rows.forEach((row, rowIndex) => {
+    rows.forEach((row) => {
       const rowDiv = document.createElement('div');
       rowDiv.className = 'row';
 
-      row.forEach((cell, cellIndex) => {
+      const cellRow: HTMLElement[] = [];
+      const colorRow: string[] = [];
+
+      row.forEach((cell) => {
         const cellDiv = document.createElement('div');
         cellDiv.className = 'cell';
-        cellDiv.dataset.row = String(rowIndex);
-        cellDiv.dataset.col = String(cellIndex);
-        cellDiv.style.backgroundColor = this.getCellColor(cell);
+        const color = this.getCellColor(cell);
+        cellDiv.style.backgroundColor = color;
         rowDiv.appendChild(cellDiv);
+
+        cellRow.push(cellDiv);
+        colorRow.push(color);
       });
 
+      this.cellElements.push(cellRow);
+      this.previousColors.push(colorRow);
       wrapper.appendChild(rowDiv);
     });
 
@@ -79,19 +98,33 @@ export class Emulator {
 
   /**
    * Updates cell colors without rebuilding the DOM.
+   * Only updates cells that have changed color.
    */
   private updateCells(): void {
     const rows = this.matrix.getRows();
-    rows.forEach((row, rowIndex) => {
-      row.forEach((cell, cellIndex) => {
-        const cellDiv = this.container.querySelector<HTMLElement>(
-          `.cell[data-row="${rowIndex}"][data-col="${cellIndex}"]`
-        );
-        if (cellDiv) {
-          cellDiv.style.backgroundColor = this.getCellColor(cell);
+    for (let rowIndex = 0; rowIndex < rows.length; rowIndex++) {
+      const row = rows[rowIndex];
+      for (let cellIndex = 0; cellIndex < row.length; cellIndex++) {
+        const color = this.getCellColor(row[cellIndex]);
+
+        // Only update if color changed
+        if (color !== this.previousColors[rowIndex][cellIndex]) {
+          this.cellElements[rowIndex][cellIndex].style.backgroundColor = color;
+          this.previousColors[rowIndex][cellIndex] = color;
         }
-      });
-    });
+      }
+    }
+  }
+
+  /**
+   * Updates the frame counter display.
+   */
+  private updateFrameCounter(frame: number): void {
+    if (this.frameCounter) {
+      const current = frame + 1;
+      const total = this.animationController.maxFrames;
+      this.frameCounter.textContent = `${current}/${total}`;
+    }
   }
 }
 

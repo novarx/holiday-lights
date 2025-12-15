@@ -10,6 +10,7 @@ export type FrameCallback = (frame: number) => void;
 export class AnimationController {
   private intervalId?: number;
   private currentFrame = 0;
+  private _maxFrames = 100;
   private readonly subscribers: Set<FrameCallback> = new Set();
 
   /**
@@ -17,6 +18,13 @@ export class AnimationController {
    */
   get frame(): number {
     return this.currentFrame;
+  }
+
+  /**
+   * Gets the maximum number of frames.
+   */
+  get maxFrames(): number {
+    return this._maxFrames;
   }
 
   /**
@@ -38,6 +46,8 @@ export class AnimationController {
     if (this.intervalId !== undefined) {
       return; // Already running
     }
+
+    this._maxFrames = maxFrames;
 
     this.intervalId = window.setInterval(() => {
       this.currentFrame = (this.currentFrame + 1) % maxFrames;
