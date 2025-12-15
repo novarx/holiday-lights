@@ -59,3 +59,12 @@ body {
   background-color: #444;
   border-color: #777;
 }
+
+.frame-counter {
+  text-align: center;
+  font-size: 14px;
+  font-family: monospace;
+  color: rgba(255, 255, 255, 0.7);
+  margin-bottom: 10px;
+}
+
