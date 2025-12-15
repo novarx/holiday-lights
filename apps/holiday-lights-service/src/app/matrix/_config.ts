@@ -6,7 +6,7 @@ import {
   PixelMapperType,
   RuntimeFlag,
   RuntimeOptions
-} from "rpi-led-matrix";
+} from "./led-matrix.adapter";
 
 export const matrixOptions: MatrixOptions = {
   ...LedMatrix.defaultMatrixOptions(),

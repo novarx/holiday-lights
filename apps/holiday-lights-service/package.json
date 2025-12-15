@@ -5,7 +5,9 @@
   "scripts": {
     "build": "webpack-cli build --node-env=production",
     "build:dev": "webpack-cli build --node-env=development",
+    "build:raspberry": "webpack-cli build --node-env=raspberry",
     "serve": "npm run build:dev && node ../../dist/apps/holiday-lights-service/main.js",
+    "serve:raspberry": "npm run build:raspberry && node ../../dist/apps/holiday-lights-service/main.js",
     "test": "jest --config jest.config.cts",
     "lint": "eslint ."
   },

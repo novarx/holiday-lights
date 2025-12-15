@@ -15,7 +15,8 @@
     "build:pixelit": "npm run build -w @holiday-lights/pixelit",
     "serve": "npm run serve --workspaces --if-present",
     "serve:emulator": "npm run dev -w emulator-ui",
-    "serve:service": "npm run serve -w @holiday-lights/holiday-lights-service"
+    "serve:service": "npm run serve -w @holiday-lights/holiday-lights-service",
+    "serve:service:raspberry": "npm run serve:raspberry -w @holiday-lights/holiday-lights-service"
   },
   "dependencies": {
     "@nestjs/common": "^11.0.0",

@@ -2,6 +2,9 @@ const { join, resolve } = require('path');
 const nodeExternals = require('webpack-node-externals');
 const CopyPlugin = require('copy-webpack-plugin');
 
+const isRaspberry = process.env.NODE_ENV === 'raspberry';
+const isProduction = process.env.NODE_ENV === 'production' || isRaspberry;
+
 // Lazy-loaded modules that NestJS tries to require optionally
 const lazyImports = [
   '@nestjs/microservices',
@@ -14,16 +17,24 @@ const lazyImports = [
   'class-transformer',
 ];
 
+// Determine which LED matrix implementation to use
+const ledMatrixAdapter = isRaspberry
+  ? resolve(__dirname, 'src/app/matrix/led-matrix.real.ts')
+  : resolve(__dirname, 'src/app/matrix/led-matrix.mock.ts');
+
+console.log(`Building for ${isRaspberry ? 'Raspberry Pi' : 'development'} environment`);
+console.log(`Using LED matrix: ${isRaspberry ? 'real (rpi-led-matrix)' : 'mock'}`);
+
 module.exports = {
   entry: './src/main.ts',
   target: 'node',
-  mode: process.env.NODE_ENV === 'production' ? 'production' : 'development',
-  devtool: process.env.NODE_ENV === 'production' ? false : 'source-map',
+  mode: isProduction ? 'production' : 'development',
+  devtool: isProduction ? false : 'source-map',
   output: {
     path: join(__dirname, '../../dist/apps/holiday-lights-service'),
     filename: 'main.js',
     clean: true,
-    ...(process.env.NODE_ENV !== 'production' && {
+    ...(!isProduction && {
       devtoolModuleFilenameTemplate: '[absolute-resource-path]',
     }),
   },
@@ -31,6 +42,7 @@ module.exports = {
     extensions: ['.ts', '.js'],
     alias: {
       '@holiday-lights/imager-core': resolve(__dirname, '../../libs/imager-core/src/index.ts'),
+      './led-matrix.adapter': ledMatrixAdapter,
     },
   },
   module: {

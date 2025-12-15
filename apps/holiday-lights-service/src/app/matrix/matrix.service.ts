@@ -1,6 +1,6 @@
 import {Injectable} from '@nestjs/common';
 import {CompositeImager, Dimensions, Imager, Position, RandomImage} from '@holiday-lights/imager-core';
-import {LedMatrix} from "rpi-led-matrix";
+import {LedMatrix} from "./led-matrix.adapter";
 import {matrixOptions, runtimeOptions} from './_config';
 
 @Injectable()
