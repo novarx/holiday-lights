@@ -68,3 +68,54 @@ body {
   margin-bottom: 10px;
 }
 
+/* Router navigation styles */
+.router-nav {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  margin-bottom: 20px;
+  padding: 10px;
+  background-color: #1a1a1a;
+  border-radius: 8px;
+}
+
+.nav-link {
+  color: rgba(255, 255, 255, 0.7);
+  text-decoration: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+}
+
+.nav-link:hover {
+  color: rgba(255, 255, 255, 1);
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.nav-link.active {
+  color: #646cff;
+  background-color: rgba(100, 108, 255, 0.15);
+}
+
+.router-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Multi-matrix header styles */
+.multi-matrix-header {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  margin-bottom: 10px;
+  font-size: 14px;
+  font-family: monospace;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.matrix-indicator {
+  color: #646cff;
+  font-weight: bold;
+}
+

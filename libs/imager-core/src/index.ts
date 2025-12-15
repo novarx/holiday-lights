@@ -9,4 +9,5 @@ export * from './lib/compositeImager';
 export * from './lib/randomImage';
 export * from './lib/imageLoader.interface';
 export * from './lib/imageToMatrixConverter';
+export * from './lib/sceneLoader';
 
