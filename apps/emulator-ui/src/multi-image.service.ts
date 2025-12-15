@@ -1,18 +1,14 @@
-import { type Imager, SceneLoader, type ImagerModule } from '@holiday-lights/imager-core';
-
-// Vite-specific module loader for browser environment
-const browserModuleLoader = () =>
-  import.meta.glob('./scenes/*.scene.ts', { eager: true }) as Record<string, ImagerModule>;
+import { type Imager, AllScenesLoader } from '@holiday-lights/imager-core';
 
 /**
  * Service that provides multiple matrix imagers for the slideshow display.
- * Uses SceneLoader from imager-core with browser-specific module loading.
+ * Uses AllScenesLoader from imager-core to load all available scenes.
  */
 export class MultiImageService {
-  private readonly sceneLoader: SceneLoader;
+  private readonly sceneLoader: AllScenesLoader;
 
   constructor() {
-    this.sceneLoader = new SceneLoader(browserModuleLoader);
+    this.sceneLoader = new AllScenesLoader();
   }
 
   /**

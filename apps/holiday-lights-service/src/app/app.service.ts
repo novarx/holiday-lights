@@ -6,11 +6,14 @@ import {
   Imager,
   Matrix,
   Position,
-  RandomImage
+  RandomImage,
+  // Alternative: Use AllScenesLoader to automatically load all scenes
+  // AllScenesLoader
 } from '@holiday-lights/imager-core';
 
 @Injectable()
 export class AppService {
+  // Option 1: Manually create specific imagers
   private readonly bubblegum: Imager = new BubblegumScene('bubblegum.png');
   private readonly random: Imager = new CompositeImager(
     Dimensions.square(64),
@@ -21,6 +24,10 @@ export class AppService {
   );
 
   private readonly imager: Imager = new DefaultScene()
+
+  // Option 2: Use AllScenesLoader to load all scenes dynamically
+  // private readonly allScenes = new AllScenesLoader().getImagers();
+  // private readonly imager: Imager = this.allScenes[0];
 
   constructor() {
     console.log('AppService constructor');
