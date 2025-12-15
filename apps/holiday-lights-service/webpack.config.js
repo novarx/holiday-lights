@@ -79,6 +79,7 @@ module.exports = {
     new CopyPlugin({
       patterns: [
         { from: 'src/assets', to: 'assets', noErrorOnMissing: true },
+        { from: resolve(__dirname, '../../libs/imager-core/src/assets'), to: 'assets', noErrorOnMissing: true },
       ],
     }),
     {

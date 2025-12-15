@@ -12,6 +12,9 @@ dist
 dist-ssr
 *.local
 
+# Copied assets from imager-core library
+public/assets
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json

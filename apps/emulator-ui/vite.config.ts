@@ -1,6 +1,6 @@
 import { defineConfig } from 'vite';
 import { resolve } from 'path';
-import fs from 'fs';
+import { copyFileSync, mkdirSync, readdirSync, existsSync } from 'fs';
 
 export default defineConfig({
   resolve: {
@@ -10,35 +10,35 @@ export default defineConfig({
       '@holiday-lights/imager-core': resolve(__dirname, '../../libs/imager-core/src/index.ts')
     }
   },
+  publicDir: 'public',
   server: {
-    fs: {
-      // Allow serving files from the imager-core lib
-      allow: ['..', '../..']
-    },
     watch: {
       // Watch the imager-core lib for changes
       ignored: ['!**/libs/imager-core/**']
     }
   },
-  publicDir: 'public',
   plugins: [
     {
-      name: 'serve-imager-core-assets',
-      configureServer(server) {
-        const assetsPath = resolve(__dirname, '../../libs/imager-core/src/assets');
-        server.middlewares.use((req, res, next) => {
-          if (req.url?.startsWith('/libs/imager-core/src/assets/')) {
-            const fileName = req.url.replace('/libs/imager-core/src/assets/', '');
-            const filePath = resolve(assetsPath, fileName);
+      name: 'copy-imager-core-assets',
+      buildStart() {
+        // Copy assets from imager-core to public folder for dev server
+        const srcAssetsPath = resolve(__dirname, '../../libs/imager-core/src/assets');
+        const destAssetsPath = resolve(__dirname, 'public/assets');
 
-            if (fs.existsSync(filePath)) {
-              res.setHeader('Content-Type', 'image/png');
-              fs.createReadStream(filePath).pipe(res);
-              return;
-            }
-          }
-          next();
-        });
+        if (!existsSync(destAssetsPath)) {
+          mkdirSync(destAssetsPath, { recursive: true });
+        }
+
+        if (existsSync(srcAssetsPath)) {
+          const files = readdirSync(srcAssetsPath);
+          files.forEach(file => {
+            copyFileSync(
+              resolve(srcAssetsPath, file),
+              resolve(destAssetsPath, file)
+            );
+          });
+          console.log(`Copied ${files.length} asset(s) from imager-core to public/assets`);
+        }
       }
     }
   ]
