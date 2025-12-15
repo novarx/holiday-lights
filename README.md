@@ -13,7 +13,7 @@ or go to
 
 ## Creating a New Scene
 
-1. **Copy the DefaultScene**: Duplicate `libs/imager-core/src/scenes/default.scene.ts` and rename it to your scene name (e.g., `my-scene.ts`)
+1. **Copy the DefaultScene**: Duplicate [libs/imager-core/src/scenes/default.scene.ts](`libs/imager-core/src/scenes/default.scene.ts`) and rename it to your scene name (e.g., `my-scene.ts`)
 
 2. **Implement your scene**: Modify the copied file with your scene logic
    - Use available imagers from `imager-core/src/lib/imagers`:
