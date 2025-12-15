@@ -1,5 +1,4 @@
-import { applyBrightness, type Cell, type Matrix, type Imager } from '@holiday-lights/imager-core';
-import { AnimationController } from './animation';
+import { applyBrightness, type Cell, type Matrix, type Imager, AnimationController } from '@holiday-lights/imager-core';
 
 /**
  * Emulator component that renders multiple LED matrix displays in sequence.

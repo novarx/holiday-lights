@@ -8,6 +8,7 @@ export * from './lib/model/position';
 export * from './lib/model/imageLoader.interface';
 export * from './lib/imagers/textRenderer.interface';
 export * from './lib/main/imageToMatrixConverter';
+export * from './lib/animation.controller';
 
 // Platform configuration
 export * from './lib/main/platform';
