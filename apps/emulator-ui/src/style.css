@@ -1,0 +1,61 @@
+:root {
+  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+
+  color-scheme: dark;
+  color: rgba(255, 255, 255, 0.87);
+  background-color: #242424;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  margin: 0;
+  display: flex;
+  place-items: center;
+  min-width: 320px;
+  min-height: 100vh;
+}
+
+#app {
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+/* Emulator matrix styles */
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 20px;
+  background-color: #1a1a1a;
+  width: fit-content;
+  margin: 0 auto;
+}
+
+.row {
+  display: flex;
+  gap: 2px;
+}
+
+.cell {
+  width: 10px;
+  height: 10px;
+  background-color: #333;
+  border: 1px solid #555;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 6px;
+  color: #888;
+  box-sizing: border-box;
+}
+
+.cell:hover {
+  background-color: #444;
+  border-color: #777;
+}
