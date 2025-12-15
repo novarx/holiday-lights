@@ -1,0 +1,16 @@
+{
+  "name": "@holiday-lights/holiday-lights-service",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "build": "webpack-cli build --node-env=production",
+    "build:dev": "webpack-cli build --node-env=development",
+    "serve": "npm run build:dev && node ../../dist/apps/holiday-lights-service/main.js",
+    "test": "jest --config jest.config.cts",
+    "lint": "eslint ."
+  },
+  "dependencies": {
+    "@holiday-lights/imager-core": "*"
+  }
+}
+

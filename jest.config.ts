@@ -1,6 +1,11 @@
 import type { Config } from 'jest';
-import { getJestProjectsAsync } from '@nx/jest';
 
-export default async (): Promise<Config> => ({
-  projects: await getJestProjectsAsync(),
-});
+const config: Config = {
+  projects: [
+    '<rootDir>/apps/emulator',
+    '<rootDir>/apps/holiday-lights-service',
+    '<rootDir>/libs/imager-core',
+  ],
+};
+
+export default config;

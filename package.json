@@ -1,11 +1,29 @@
 {
-  "name": "@workspaces/source",
+  "name": "@holiday-lights/root",
   "version": "0.0.0",
   "license": "MIT",
-  "scripts": {
-    "serve": "nx run-many serve"
-  },
   "private": true,
+  "workspaces": [
+    "apps/*",
+    "libs/*"
+  ],
+  "scripts": {
+    "build": "npm run build --workspaces --if-present",
+    "build:emulator": "npm run build -w @holiday-lights/emulator",
+    "build:service": "npm run build -w @holiday-lights/holiday-lights-service",
+    "build:imager-core": "npm run build -w @holiday-lights/imager-core",
+    "serve": "npm run serve --workspaces --if-present",
+    "serve:emulator": "npm run serve -w @holiday-lights/emulator",
+    "serve:service": "npm run serve -w @holiday-lights/holiday-lights-service",
+    "test": "npm run test --workspaces --if-present",
+    "test:emulator": "npm run test -w @holiday-lights/emulator",
+    "test:service": "npm run test -w @holiday-lights/holiday-lights-service",
+    "test:imager-core": "npm run test -w @holiday-lights/imager-core",
+    "lint": "npm run lint --workspaces --if-present",
+    "lint:emulator": "npm run lint -w @holiday-lights/emulator",
+    "lint:service": "npm run lint -w @holiday-lights/holiday-lights-service",
+    "lint:imager-core": "npm run lint -w @holiday-lights/imager-core"
+  },
   "dependencies": {
     "@angular/common": "~20.3.0",
     "@angular/compiler": "~20.3.0",
@@ -33,18 +51,6 @@
     "@eslint/js": "^9.8.0",
     "@nestjs/schematics": "^11.0.0",
     "@nestjs/testing": "^11.0.0",
-    "@nx/angular": "^22.1.3",
-    "@nx/devkit": "22.1.3",
-    "@nx/eslint": "22.1.3",
-    "@nx/eslint-plugin": "22.1.3",
-    "@nx/jest": "22.1.3",
-    "@nx/js": "22.1.3",
-    "@nx/nest": "22.1.3",
-    "@nx/node": "22.1.3",
-    "@nx/playwright": "22.1.3",
-    "@nx/web": "22.1.3",
-    "@nx/webpack": "22.1.3",
-    "@nx/workspace": "22.1.3",
     "@playwright/test": "^1.36.0",
     "@schematics/angular": "~20.3.0",
     "@swc-node/register": "~1.9.1",
@@ -62,13 +68,16 @@
     "jest-environment-node": "^29.7.0",
     "jest-preset-angular": "~14.6.1",
     "jest-util": "^29.7.0",
-    "nx": "22.1.3",
     "prettier": "^2.6.2",
     "ts-jest": "^29.4.0",
     "ts-node": "10.9.1",
     "tslib": "^2.3.0",
     "typescript": "~5.9.2",
     "typescript-eslint": "^8.40.0",
-    "webpack-cli": "^5.1.4"
+    "webpack": "^5.90.0",
+    "webpack-cli": "^5.1.4",
+    "webpack-node-externals": "^3.0.0",
+    "copy-webpack-plugin": "^12.0.0",
+    "ts-loader": "^9.5.0"
   }
 }

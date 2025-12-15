@@ -1,0 +1,16 @@
+{
+  "name": "@holiday-lights/emulator",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "build": "ng build",
+    "build:dev": "ng build --configuration=development",
+    "serve": "ng serve --configuration=development",
+    "test": "jest --config jest.config.cts",
+    "lint": "eslint ."
+  },
+  "dependencies": {
+    "@holiday-lights/imager-core": "*"
+  }
+}
+
