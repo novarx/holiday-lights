@@ -6,6 +6,12 @@ export default defineConfig({
     alias: {
       '@holiday-lights/imager-core': resolve(__dirname, '../../libs/imager-core/src/index.ts')
     }
+  },
+  server: {
+    watch: {
+      // Watch the imager-core lib for changes
+      ignored: ['!**/libs/imager-core/**']
+    }
   }
 });
 
