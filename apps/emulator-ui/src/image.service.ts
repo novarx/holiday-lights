@@ -1,13 +1,4 @@
-import {
-  Matrix,
-  CompositeImager,
-  type Imager,
-  Position,
-  Dimensions,
-  RandomImage,
-  ImageFileImager,
-  TextImager,
-} from '@holiday-lights/imager-core';
+import {type Imager, Matrix, DefaultScene,} from '@holiday-lights/imager-core';
 
 /**
  * Service that provides matrix images for the emulator display.
@@ -17,22 +8,7 @@ export class ImageService implements Imager {
   private readonly imager: Imager;
 
   constructor() {
-    this.imager = new CompositeImager(
-      Dimensions.square(64),
-      'rgb(45, 45, 45)'
-    )
-      .addImager(
-        new ImageFileImager('bubblegum.png', Dimensions.square(45)),
-        Position.center()
-      )
-      .addImager(
-        new TextImager('Lorem', 12, 'monospace', 'rgb(0, 255, 0)'),
-        Position.centerHorizontal(53)
-      )
-      .addImager(
-        new RandomImage(Dimensions.square(15)),
-        Position.static(0, 0)
-      );
+    this.imager = new DefaultScene();
   }
 
   getMatrix(frame: number, previousMatrix: Matrix | null): Matrix {

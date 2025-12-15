@@ -1,31 +1,35 @@
 import {
   CompositeImager,
+  Dimensions, ImageFileImager,
   type Imager,
-  Position,
-  Dimensions,
   type Matrix,
-  ImageFileImager,
+  Position,
+  RandomImage,
   TextImager,
 } from '@holiday-lights/imager-core';
 
 /**
- * Bubblegum image scene with centered image and label.
+ * Random pattern scene with animated random pixels.
  */
-export class BubblegumScene implements Imager {
+export class DefaultScene implements Imager {
   private readonly imager: Imager;
 
-  constructor(imagePath: string = 'bubblegum.png') {
+  constructor() {
     this.imager = new CompositeImager(
       Dimensions.square(64),
       'rgb(45, 45, 45)'
     )
       .addImager(
-        new ImageFileImager(imagePath, Dimensions.square(45)),
+        new ImageFileImager('bubblegum.png', Dimensions.square(45)),
         Position.center()
       )
       .addImager(
-        new TextImager('Bubblegum', 10, 'monospace', 'rgb(255, 100, 200)'),
-        Position.centerHorizontal(55)
+        new TextImager('Lorem', 12, 'monospace', 'rgb(0, 255, 0)'),
+        Position.centerHorizontal(53)
+      )
+      .addImager(
+        new RandomImage(Dimensions.square(15)),
+        Position.static(0, 0)
       );
   }
 

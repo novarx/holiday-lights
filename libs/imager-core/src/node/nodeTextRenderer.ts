@@ -1,4 +1,4 @@
-import type { TextRenderer, TextRenderResult } from '../lib/textRenderer.interface';
+import type { TextRenderer, TextRenderResult } from '../lib/imagers/textRenderer.interface';
 
 /**
  * Node.js-specific implementation of TextRenderer using node-canvas.

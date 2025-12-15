@@ -1,5 +1,5 @@
-import { Dimensions } from './dimensions';
-import type { ImageLoader, RawImageData } from './imageLoader.interface';
+import { Dimensions } from '../model/dimensions';
+import type { ImageLoader, RawImageData } from '../model/imageLoader.interface';
 
 /**
  * Converts an image file to a matrix representation with pixel color data.

@@ -1,7 +1,7 @@
-import { Imager } from './imager';
-import { Matrix } from './matrix';
-import { Position } from './position';
-import { Dimensions } from './dimensions';
+import { Imager } from '../model/imager';
+import { Matrix } from '../model/matrix';
+import { Position } from '../model/position';
+import { Dimensions } from '../model/dimensions';
 
 /**
  * Positioned imager with position config and optional dimensions.

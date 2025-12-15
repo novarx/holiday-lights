@@ -1,4 +1,4 @@
-import { type Imager } from './imager';
+import { type Imager } from '../model/imager';
 
 /**
  * Type representing a module that exports Imager classes.

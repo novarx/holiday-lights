@@ -1,7 +1,7 @@
-import { Imager } from './imager';
-import { Matrix } from './matrix';
-import { rgb } from './color.utils';
-import { Dimensions } from './dimensions';
+import { Imager } from '../model/imager';
+import { Matrix } from '../model/matrix';
+import { rgb } from '../color.utils';
+import { Dimensions } from '../model/dimensions';
 
 export class RandomImage implements Imager {
   constructor(private readonly dimensions: Dimensions = Dimensions.square(64)) {}

@@ -1,9 +1,9 @@
-import type { Imager } from './imager';
-import { Matrix } from './matrix';
-import { rgb } from './color.utils';
-import { Dimensions } from './dimensions';
-import { ImageToMatrixConverter } from './imageToMatrixConverter';
-import { getImageLoader } from './platform';
+import type { Imager } from '../model/imager';
+import { Matrix } from '../model/matrix';
+import { rgb } from '../color.utils';
+import { Dimensions } from '../model/dimensions';
+import { ImageToMatrixConverter } from '../main/imageToMatrixConverter';
+import { getImageLoader } from '../main/platform';
 
 /**
  * Imager that loads and displays an image file, scaled to fit within the matrix dimensions.

@@ -7,8 +7,9 @@ import { MultiImageService } from './multi-image.service';
 import { Router } from './router';
 
 // Configure platform-specific implementations
+// Point to the imager-core lib's assets folder directly
 configurePlatform({
-  imageLoader: new BrowserImageLoader(),
+  imageLoader: new BrowserImageLoader('/libs/imager-core/src/assets'),
   textRenderer: new BrowserTextRenderer(),
 });
 

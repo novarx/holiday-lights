@@ -8,10 +8,13 @@ import { NestFactory } from '@nestjs/core';
 import { configurePlatform } from '@holiday-lights/imager-core';
 import { NodeImageLoader, NodeTextRenderer } from '@holiday-lights/imager-core/node';
 import { AppModule } from './app/app.module';
+import { join } from 'path';
 
 // Configure platform-specific implementations for Node.js
+// Point to the imager-core lib's assets folder directly
+// From dist/apps/holiday-lights-service -> back to root -> to source libs folder
 configurePlatform({
-  imageLoader: new NodeImageLoader(),
+  imageLoader: new NodeImageLoader(join(__dirname, '../../../libs/imager-core/src/assets')),
   textRenderer: new NodeTextRenderer(),
 });
 

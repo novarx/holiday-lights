@@ -1,10 +1,43 @@
-import type { Dimensions } from '../lib/dimensions';
-import type { ImageLoader, RawImageData } from '../lib/imageLoader.interface';
+import type { Dimensions } from '../lib/model/dimensions';
+import type { ImageLoader, RawImageData } from '../lib/model/imageLoader.interface';
 
 /**
  * Browser-specific implementation of ImageLoader using HTMLCanvasElement.
  */
 export class BrowserImageLoader implements ImageLoader {
+  private basePath: string = '/assets';
+
+  /**
+   * Creates a BrowserImageLoader with an optional base path.
+   * @param basePath - Base directory for resolving relative image paths (defaults to '/assets')
+   */
+  constructor(basePath?: string) {
+    if (basePath) {
+      this.basePath = basePath;
+    }
+  }
+
+  /**
+   * Sets the base path for resolving relative image paths.
+   */
+  setBasePath(basePath: string): void {
+    this.basePath = basePath;
+  }
+
+  /**
+   * Resolves the image path to a full URL.
+   * If the path is relative, it's resolved relative to the basePath (assets folder).
+   */
+  private resolvePath(imagePath: string): string {
+    // If it's already an absolute URL or starts with /, return as-is
+    if (imagePath.startsWith('http://') || imagePath.startsWith('https://') || imagePath.startsWith('/')) {
+      return imagePath;
+    }
+    // Otherwise, resolve relative to the assets folder
+    const normalizedBasePath = this.basePath.endsWith('/') ? this.basePath : `${this.basePath}/`;
+    return `${normalizedBasePath}${imagePath}`;
+  }
+
   /**
    * Loads an image from the specified path using browser APIs.
    */
@@ -41,10 +74,11 @@ export class BrowserImageLoader implements ImageLoader {
       };
 
       img.onerror = () => {
-        reject(new Error(`Failed to load image: ${imagePath}`));
+        const resolvedPath = this.resolvePath(imagePath);
+        reject(new Error(`Failed to load image: ${imagePath} (resolved to: ${resolvedPath})`));
       };
 
-      img.src = imagePath;
+      img.src = this.resolvePath(imagePath);
     });
   }
 

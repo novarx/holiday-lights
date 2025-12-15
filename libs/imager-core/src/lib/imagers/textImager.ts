@@ -1,8 +1,8 @@
-import type { Imager } from './imager';
-import { Matrix } from './matrix';
-import { rgb } from './color.utils';
-import { Dimensions } from './dimensions';
-import { getTextRenderer } from './platform';
+import type { Imager } from '../model/imager';
+import { Matrix } from '../model/matrix';
+import { rgb } from '../color.utils';
+import { Dimensions } from '../model/dimensions';
+import { getTextRenderer } from '../main/platform';
 
 /**
  * Imager that renders text as a bitmap.

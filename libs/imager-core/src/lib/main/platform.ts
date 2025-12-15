@@ -1,5 +1,5 @@
-import type { ImageLoader } from './imageLoader.interface';
-import type { TextRenderer } from './textRenderer.interface';
+import type { ImageLoader } from '../model/imageLoader.interface';
+import type { TextRenderer } from '../imagers/textRenderer.interface';
 
 /**
  * Platform-specific implementations that must be provided.
