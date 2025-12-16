@@ -34,7 +34,7 @@ export class DefaultScene implements Imager {
   constructor() {
     this.imager = new CompositeImager(
       Dimensions.square(64),
-      'rgb(45, 45, 45)'
+      'rgb(0, 0, 0)'
     )
       .addImager(
         new ImageFileImager('bubblegum.png', Dimensions.square(45)),
