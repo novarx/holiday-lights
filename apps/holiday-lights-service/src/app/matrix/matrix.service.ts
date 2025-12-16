@@ -3,6 +3,8 @@ import {AllScenesLoader, applyBrightness, Imager, Matrix} from '@holiday-lights/
 import {LedMatrix} from "./led-matrix.adapter";
 import {matrixOptions, runtimeOptions} from './_config';
 
+const wait = (t: number) => new Promise(ok => setTimeout(ok, t));
+
 @Injectable()
 export class MatrixService implements OnModuleDestroy {
   private readonly imagers: Imager[];
@@ -69,7 +71,7 @@ export class MatrixService implements OnModuleDestroy {
   /**
    * Updates the LED matrix with the current frame.
    */
-  private updateMatrix(): void {
+  private async updateMatrix(): Promise<void> {
     const matrixDefinition = this.getCurrentImager().getMatrix(this.currentFrame, this.previousMatrix);
     this.previousMatrix = matrixDefinition;
 
@@ -85,14 +87,15 @@ export class MatrixService implements OnModuleDestroy {
 
     // Sync to display
     this.matrix.sync();
+    await wait(this.intervalMs);
   }
 
   /**
    * Animation loop tick handler.
    */
-  private onFrame(): void {
+  private async onFrame(): Promise<void> {
     // Update the matrix display with current frame
-    this.updateMatrix();
+    await this.updateMatrix();
 
     // Advance frame counter
     this.currentFrame = (this.currentFrame + 1) % this.maxFrames;
@@ -129,8 +132,8 @@ export class MatrixService implements OnModuleDestroy {
       return; // Already running
     }
 
-    this.intervalId = setInterval(() => {
-      this.onFrame();
+    this.intervalId = setInterval(async () => {
+      await this.onFrame();
     }, this.intervalMs);
   }
 
