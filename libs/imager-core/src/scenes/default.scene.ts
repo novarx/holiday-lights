@@ -41,7 +41,7 @@ export class DefaultScene implements Imager {
         Position.center()
       )
       .addImager(
-        new TextImager('Lorem', 12, 'monospace', 'rgb(0, 255, 0)'),
+        new TextImager('DevTalk', 12, 'monospace', 'rgb(0, 255, 0)'),
         Position.centerHorizontal(53)
       )
       .addImager(

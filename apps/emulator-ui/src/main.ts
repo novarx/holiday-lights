@@ -51,11 +51,24 @@ controlsContent.className = 'controls-content';
 const sceneCheckboxes = document.createElement('div');
 sceneCheckboxes.className = 'scene-checkboxes';
 
-// Initialize with only "Default" scene selected
+// Initialize with only "Default" scene selected or load from localStorage
 const selectedScenes = new Set<string>();
-const defaultScene = allScenes.find(s => s.name === 'Default');
-if (defaultScene) {
-  selectedScenes.add(defaultScene.id);
+const savedScenes = localStorage.getItem('selectedScenes');
+if (savedScenes) {
+  try {
+    const parsed = JSON.parse(savedScenes);
+    parsed.forEach((id: string) => selectedScenes.add(id));
+  } catch (e) {
+    console.error('Failed to parse saved scenes', e);
+  }
+}
+
+// If no saved scenes, default to "Default" scene
+if (selectedScenes.size === 0) {
+  const defaultScene = allScenes.find(s => s.name === 'Default');
+  if (defaultScene) {
+    selectedScenes.add(defaultScene.id);
+  }
 }
 
 allScenes.forEach(scene => {
@@ -65,7 +78,7 @@ allScenes.forEach(scene => {
   const checkbox = document.createElement('input');
   checkbox.type = 'checkbox';
   checkbox.value = scene.id;
-  checkbox.checked = scene.name === 'Default';
+  checkbox.checked = selectedScenes.has(scene.id);
   checkbox.className = 'scene-checkbox';
 
   const labelText = document.createElement('span');
@@ -81,6 +94,8 @@ allScenes.forEach(scene => {
     } else {
       selectedScenes.delete(scene.id);
     }
+    // Save to localStorage
+    localStorage.setItem('selectedScenes', JSON.stringify(Array.from(selectedScenes)));
     updateEmulator();
   });
 });

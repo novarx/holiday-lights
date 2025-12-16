@@ -5,6 +5,7 @@ import { SceneRegistry } from '../lib/main/sceneRegistry';
 // The scenes will self-register when their modules are loaded
 import './default.scene';
 import './rotating-square.scene';
+import './tetris.scene';
 
 /**
  * Centralized loader for all scenes defined in imager-core.
