@@ -7,6 +7,7 @@ import './default.scene';
 import './rotating-square.scene';
 import './tetris.scene';
 import './christmas-tree.scene';
+import './pulsating'
 
 /**
  * Centralized loader for all scenes defined in imager-core.
