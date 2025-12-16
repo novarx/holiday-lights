@@ -6,6 +6,7 @@ import { SceneRegistry } from '../lib/main/sceneRegistry';
 import './default.scene';
 import './rotating-square.scene';
 import './tetris.scene';
+import './christmas-tree.scene';
 
 /**
  * Centralized loader for all scenes defined in imager-core.
