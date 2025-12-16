@@ -1,4 +1,4 @@
-import { applyBrightness, type Cell, type Matrix, type Imager, AnimationController } from '@holiday-lights/imager-core';
+import { applyBrightness, parseRgb, type Cell, type Matrix, type Imager, AnimationController } from '@holiday-lights/imager-core';
 
 /**
  * Emulator component that renders multiple LED matrix displays in sequence.
@@ -17,6 +17,7 @@ export class MultiMatrixEmulator {
   private previousColors: string[][] = [];
   private readonly maxFrames: number;
   private cycling: boolean;
+  private tooltip?: HTMLElement;
 
   constructor(container: HTMLElement, imagers: Imager[], maxFrames: number = 100, cycling: boolean = true) {
     this.container = container;
@@ -109,18 +110,22 @@ export class MultiMatrixEmulator {
     wrapper.className = 'wrapper';
 
     const rows = this.matrix.getRows();
-    rows.forEach((row) => {
+    rows.forEach((row, rowIndex) => {
       const rowDiv = document.createElement('div');
       rowDiv.className = 'row';
 
       const cellRow: HTMLElement[] = [];
       const colorRow: string[] = [];
 
-      row.forEach((cell) => {
+      row.forEach((cell, cellIndex) => {
         const cellDiv = document.createElement('div');
         cellDiv.className = 'cell';
         const color = this.getCellColor(cell);
         cellDiv.style.backgroundColor = color;
+
+        // Add hover event listeners
+        this.addCellHoverListeners(cellDiv, rowIndex, cellIndex);
+
         rowDiv.appendChild(cellDiv);
 
         cellRow.push(cellDiv);
@@ -133,6 +138,12 @@ export class MultiMatrixEmulator {
     });
 
     this.container.appendChild(wrapper);
+
+    // Create tooltip element
+    this.tooltip = document.createElement('div');
+    this.tooltip.className = 'cell-tooltip';
+    this.tooltip.style.display = 'none';
+    this.container.appendChild(this.tooltip);
   }
 
   /**
@@ -153,6 +164,72 @@ export class MultiMatrixEmulator {
         }
       }
     }
+  }
+
+  /**
+   * Adds hover event listeners to a cell.
+   */
+  private addCellHoverListeners(cellDiv: HTMLElement, rowIndex: number, cellIndex: number): void {
+    cellDiv.addEventListener('mouseenter', (event) => {
+      this.showTooltip(event as MouseEvent, rowIndex, cellIndex);
+    });
+
+    cellDiv.addEventListener('mousemove', (event) => {
+      this.updateTooltipPosition(event as MouseEvent);
+    });
+
+    cellDiv.addEventListener('mouseleave', () => {
+      this.hideTooltip();
+    });
+  }
+
+  /**
+   * Shows the tooltip with cell information.
+   */
+  private showTooltip(event: MouseEvent, rowIndex: number, cellIndex: number): void {
+    if (!this.tooltip) return;
+
+    const rows = this.matrix.getRows();
+    if (rowIndex >= rows.length || cellIndex >= rows[rowIndex].length) return;
+
+    const cell = rows[rowIndex][cellIndex];
+    const rgbValues = parseRgb(cell.color);
+    const brightness = cell.brightness;
+
+    if (rgbValues) {
+      const [r, g, b] = rgbValues;
+      this.tooltip.innerHTML = `
+        <div><strong>RGB:</strong> (${r}, ${g}, ${b})</div>
+        <div><strong>Brightness:</strong> ${brightness}/255</div>
+      `;
+    } else {
+      this.tooltip.innerHTML = `
+        <div><strong>Color:</strong> ${cell.color}</div>
+        <div><strong>Brightness:</strong> ${brightness}/255</div>
+      `;
+    }
+
+    this.tooltip.style.display = 'block';
+    this.updateTooltipPosition(event);
+  }
+
+  /**
+   * Updates the tooltip position based on mouse coordinates.
+   */
+  private updateTooltipPosition(event: MouseEvent): void {
+    if (!this.tooltip) return;
+
+    const offset = 10;
+    this.tooltip.style.left = `${event.pageX + offset}px`;
+    this.tooltip.style.top = `${event.pageY + offset}px`;
+  }
+
+  /**
+   * Hides the tooltip.
+   */
+  private hideTooltip(): void {
+    if (!this.tooltip) return;
+    this.tooltip.style.display = 'none';
   }
 
   /**

@@ -81,8 +81,8 @@ export class MatrixService implements OnModuleDestroy {
     // Draw each pixel from the matrix definition
     matrixDefinition.forEach((cell, x, y) => {
       const colorWithBrightness = applyBrightness(cell.color, cell.brightness);
-      const hexColor = this.rgbToHex(colorWithBrightness);
-      this.matrix.fgColor(hexColor).setPixel(x, y);
+      const hexColor = this.rgbToHex(cell.color);
+      this.matrix.fgColor(hexColor).brightness((cell.brightness / 255) * 100).setPixel(x, y);
     });
 
     // Sync to display
