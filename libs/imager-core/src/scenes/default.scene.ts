@@ -18,7 +18,7 @@ import { SceneRegistry } from '../lib/main/sceneRegistry';
  * - Centered text "Lorem" in green at y position 53
  * - Random pixels in a 15x15 area at top-left corner
  *
- * TIPS FOR LLM PROMPTS (copy this entire file and ask):
+ * TIPS FOR LLM PROMPTS (copy this entire file, if not using copilot and ask):
  * - "Create an animated scrolling text scene that moves from right to left"
  * - "Make a snake game scene where the snake moves in a pattern"
  * - "Build a scene with pulsing colors based on frame number creating a plasma effect"
