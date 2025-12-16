@@ -17,7 +17,7 @@ export const matrixOptions: MatrixOptions = {
   hardwareMapping: GpioMapping.Regular,
   multiplexing: MuxType.Direct,
   rowAddressType: 0,
-  brightness: 20,
+  brightness: 100,
   showRefreshRate: true,
 };
 

@@ -40,11 +40,11 @@ interface GamePiece {
 export class TetrisScene implements Imager {
   private readonly GRID_WIDTH = 10;
   private readonly GRID_HEIGHT = 10;
-  private readonly GRID_OFFSET_X = 27; // Center on 64x64 matrix
-  private readonly GRID_OFFSET_Y = 22;
-  private readonly SCALE = 2; // Each block is 2x2 pixels
-  private readonly SPAWN_INTERVAL = 12; // Frames between piece spawns
-  private readonly FALL_SPEED = 2; // Frames between each downward movement
+  private readonly GRID_OFFSET_X = 7; // Center on 64x64 matrix
+  private readonly GRID_OFFSET_Y = 13;
+  private readonly SCALE = 5; // Each block is 2x2 pixels
+  private readonly SPAWN_INTERVAL = 20; // Frames between piece spawns
+  private readonly FALL_SPEED = 3; // Frames between each downward movement
 
   private pieces: GamePiece[] = [];
   private settledBlocks: Map<string, string> = new Map(); // key: "x,y", value: color
