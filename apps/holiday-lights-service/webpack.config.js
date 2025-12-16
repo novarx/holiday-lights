@@ -68,12 +68,22 @@ module.exports = {
     ],
   },
   externals: [
+    // First handle specific modules that must be external
+    function({ request }, callback) {
+      if (request === 'rpi-led-matrix') {
+        // Force this to be treated as an external commonjs module
+        return callback(null, 'commonjs rpi-led-matrix');
+      }
+      if (request === 'sharp') {
+        return callback(null, 'commonjs sharp');
+      }
+      callback();
+    },
+    // Then handle all other node_modules
     nodeExternals({
       modulesFromFile: true,
       allowlist: [/@holiday-lights\/imager-core/],
     }),
-    'rpi-led-matrix',
-    'sharp',
   ],
   plugins: [
     new CopyPlugin({
