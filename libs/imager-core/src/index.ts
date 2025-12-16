@@ -15,7 +15,6 @@ export * from './lib/main/platform';
 
 // Imagers
 export * from './lib/imagers/compositeImager';
-export * from './lib/imagers/randomImage';
 export * from './lib/imagers/imageFileImager';
 export * from './lib/imagers/textImager';
 

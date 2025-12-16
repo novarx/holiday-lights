@@ -4,7 +4,6 @@ import {
   type Imager,
   type Matrix,
   Position,
-  RandomImage,
   TextImager,
 } from '@holiday-lights/imager-core';
 import { SceneRegistry } from '../lib/main/sceneRegistry';
@@ -43,10 +42,6 @@ export class DefaultScene implements Imager {
       .addImager(
         new TextImager('DevTalk', 12, 'monospace', 'rgb(0, 255, 0)'),
         Position.centerHorizontal(53)
-      )
-      .addImager(
-        new RandomImage(Dimensions.square(15)),
-        Position.static(0, 0)
       );
   }
 
