@@ -9,7 +9,7 @@ import {
 
 export const matrixOptions: MatrixOptions = {
   ...LedMatrix.defaultMatrixOptions(),
-  limitRefreshRateHz: 0,
+  limitRefreshRateHz: 75,
   rows: 64,
   cols: 64,
   chainLength: 1,

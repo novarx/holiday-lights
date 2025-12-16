@@ -43,56 +43,10 @@ export class RotatingSquareScene implements Imager {
       };
     });
 
-    // Draw the square edges
-    for (let i = 0; i < 4; i++) {
-      const start = rotatedCorners[i];
-      const end = rotatedCorners[(i + 1) % 4];
-      this.drawLine(matrix, start.x, start.y, end.x, end.y, 'rgb(0, 200, 255)');
-    }
-
     // Optional: Fill the square
-    this.fillSquare(matrix, rotatedCorners, 'rgb(0, 150, 200)');
+    this.fillSquare(matrix, rotatedCorners, 'rgb(0, 200, 255)');
 
     return matrix;
-  }
-
-  /**
-   * Draws a line between two points using Bresenham's algorithm.
-   */
-  private drawLine(
-    matrix: Matrix,
-    x0: number,
-    y0: number,
-    x1: number,
-    y1: number,
-    color: string
-  ): void {
-    const dx = Math.abs(x1 - x0);
-    const dy = Math.abs(y1 - y0);
-    const sx = x0 < x1 ? 1 : -1;
-    const sy = y0 < y1 ? 1 : -1;
-    let err = dx - dy;
-
-    let x = x0;
-    let y = y0;
-
-    while (true) {
-      if (x >= 0 && x < this.dimensions.width && y >= 0 && y < this.dimensions.height) {
-        matrix.set(x, y, { color, brightness: 255 });
-      }
-
-      if (x === x1 && y === y1) break;
-
-      const e2 = 2 * err;
-      if (e2 > -dy) {
-        err -= dy;
-        x += sx;
-      }
-      if (e2 < dx) {
-        err += dx;
-        y += sy;
-      }
-    }
   }
 
   /**
@@ -113,7 +67,7 @@ export class RotatingSquareScene implements Imager {
     for (let y = minY; y <= maxY; y++) {
       for (let x = minX; x <= maxX; x++) {
         if (this.isPointInPolygon(x, y, corners)) {
-          matrix.set(x, y, { color, brightness: 150 });
+          matrix.set(x, y, { color, brightness: 255 });
         }
       }
     }

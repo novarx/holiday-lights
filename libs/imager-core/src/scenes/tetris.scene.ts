@@ -1,20 +1,15 @@
-import {
-  Dimensions,
-  type Imager,
-  type Matrix,
-  Matrix as MatrixClass,
-} from '@holiday-lights/imager-core';
-import { SceneRegistry } from '../lib/main/sceneRegistry';
+import {Dimensions, type Imager, type Matrix, Matrix as MatrixClass,} from '@holiday-lights/imager-core';
+import {SceneRegistry} from '../lib/main/sceneRegistry';
 
 // Tetromino shapes (relative coordinates)
 const TETROMINOS = {
-  I: { blocks: [[0, 0], [1, 0], [2, 0], [3, 0]], color: 'rgb(0, 255, 255)' },
-  O: { blocks: [[0, 0], [1, 0], [0, 1], [1, 1]], color: 'rgb(255, 255, 0)' },
-  T: { blocks: [[1, 0], [0, 1], [1, 1], [2, 1]], color: 'rgb(128, 0, 128)' },
-  S: { blocks: [[1, 0], [2, 0], [0, 1], [1, 1]], color: 'rgb(0, 255, 0)' },
-  Z: { blocks: [[0, 0], [1, 0], [1, 1], [2, 1]], color: 'rgb(255, 0, 0)' },
-  J: { blocks: [[0, 0], [0, 1], [1, 1], [2, 1]], color: 'rgb(0, 0, 255)' },
-  L: { blocks: [[2, 0], [0, 1], [1, 1], [2, 1]], color: 'rgb(255, 165, 0)' },
+  I: {blocks: [[0, 0], [1, 0], [2, 0], [3, 0]], color: 'rgb(0, 255, 255)'},
+  O: {blocks: [[0, 0], [1, 0], [0, 1], [1, 1]], color: 'rgb(255, 255, 0)'},
+  T: {blocks: [[1, 0], [0, 1], [1, 1], [2, 1]], color: 'rgb(128, 0, 128)'},
+  S: {blocks: [[1, 0], [2, 0], [0, 1], [1, 1]], color: 'rgb(0, 255, 0)'},
+  Z: {blocks: [[0, 0], [1, 0], [1, 1], [2, 1]], color: 'rgb(255, 0, 0)'},
+  J: {blocks: [[0, 0], [0, 1], [1, 1], [2, 1]], color: 'rgb(0, 0, 255)'},
+  L: {blocks: [[2, 0], [0, 1], [1, 1], [2, 1]], color: 'rgb(255, 165, 0)'},
 };
 
 type TetrominoType = keyof typeof TETROMINOS;
@@ -77,7 +72,7 @@ export class TetrisScene implements Imager {
     // Fill background
     for (let y = 0; y < 64; y++) {
       for (let x = 0; x < 64; x++) {
-        matrix.set(x, y, { color: 'rgb(0, 0, 0)', brightness: 0 });
+        matrix.set(x, y, {color: 'rgb(0, 0, 0)', brightness: 0});
       }
     }
 
@@ -244,7 +239,7 @@ export class TetrisScene implements Imager {
   }
 
   private drawBorders(matrix: Matrix): void {
-    const borderColor = { color: 'rgb(100, 100, 150)', brightness: 255 };
+    const borderColor = {color: 'rgb(100, 100, 150)', brightness: 255};
 
     // Left and right walls
     for (let y = 0; y < this.GRID_HEIGHT * this.SCALE; y++) {
@@ -312,7 +307,7 @@ export class TetrisScene implements Imager {
 
     for (let dy = 0; dy < this.SCALE; dy++) {
       for (let dx = 0; dx < this.SCALE; dx++) {
-        matrix.set(screenX + dx, screenY + dy, { color, brightness: 255 });
+        matrix.set(screenX + dx, screenY + dy, {color, brightness: 255});
       }
     }
   }
@@ -325,11 +320,11 @@ export class TetrisScene implements Imager {
 
     // Simple pixel font (5x5 per character)
     const letters: Record<string, number[][]> = {
-      'T': [[1,1,1,1,1], [0,0,1,0,0], [0,0,1,0,0], [0,0,1,0,0], [0,0,1,0,0]],
-      'E': [[1,1,1,1,1], [1,0,0,0,0], [1,1,1,1,0], [1,0,0,0,0], [1,1,1,1,1]],
-      'R': [[1,1,1,1,0], [1,0,0,0,1], [1,1,1,1,0], [1,0,1,0,0], [1,0,0,1,0]],
-      'I': [[1,1,1,1,1], [0,0,1,0,0], [0,0,1,0,0], [0,0,1,0,0], [1,1,1,1,1]],
-      'S': [[0,1,1,1,1], [1,0,0,0,0], [0,1,1,1,0], [0,0,0,0,1], [1,1,1,1,0]],
+      'T': [[1, 1, 1, 1, 1], [0, 0, 1, 0, 0], [0, 0, 1, 0, 0], [0, 0, 1, 0, 0], [0, 0, 1, 0, 0]],
+      'E': [[1, 1, 1, 1, 1], [1, 0, 0, 0, 0], [1, 1, 1, 1, 0], [1, 0, 0, 0, 0], [1, 1, 1, 1, 1]],
+      'R': [[1, 1, 1, 1, 0], [1, 0, 0, 0, 1], [1, 1, 1, 1, 0], [1, 0, 1, 0, 0], [1, 0, 0, 1, 0]],
+      'I': [[1, 1, 1, 1, 1], [0, 0, 1, 0, 0], [0, 0, 1, 0, 0], [0, 0, 1, 0, 0], [1, 1, 1, 1, 1]],
+      'S': [[0, 1, 1, 1, 1], [1, 0, 0, 0, 0], [0, 1, 1, 1, 0], [0, 0, 0, 0, 1], [1, 1, 1, 1, 0]],
     };
 
     let currentX = startX;
@@ -339,7 +334,7 @@ export class TetrisScene implements Imager {
         for (let ly = 0; ly < 5; ly++) {
           for (let lx = 0; lx < 5; lx++) {
             if (letter[ly][lx]) {
-              matrix.set(currentX + lx, y + ly, { color: 'rgb(255, 100, 0)', brightness: 255 });
+              matrix.set(currentX + lx, y + ly, {color: 'rgb(255, 255, 255)', brightness: 255});
             }
           }
         }
