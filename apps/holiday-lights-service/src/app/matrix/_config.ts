@@ -18,7 +18,7 @@ export const matrixOptions: MatrixOptions = {
   multiplexing: MuxType.Direct,
   rowAddressType: 0,
   brightness: 20,
-  // scanMode: ScanMode.Interlaced,
+  showRefreshRate: true,
 };
 
 console.log('matrix options: ', JSON.stringify(matrixOptions, null, 2));

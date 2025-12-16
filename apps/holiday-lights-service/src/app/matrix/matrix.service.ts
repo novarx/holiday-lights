@@ -53,11 +53,17 @@ export class MatrixService implements OnModuleDestroy {
 
   /**
    * Advances to the next scene in the sequence.
+   * Loops back to the first scene after the last one.
    */
   private advanceToNextScene(): void {
+    if (this.imagers.length === 0) return;
+
     this.currentImagerIndex = (this.currentImagerIndex + 1) % this.imagers.length;
     this.previousMatrix = null; // Reset matrix for new scene
-    console.log(`Switching to scene ${this.currentImagerIndex + 1}/${this.imagers.length}`);
+
+    if (this.imagers.length > 1) {
+      console.log(`Switching to scene ${this.currentImagerIndex + 1}/${this.imagers.length}`);
+    }
   }
 
   /**
@@ -85,14 +91,15 @@ export class MatrixService implements OnModuleDestroy {
    * Animation loop tick handler.
    */
   private onFrame(): void {
-    // Update the matrix display
+    // Update the matrix display with current frame
     this.updateMatrix();
 
     // Advance frame counter
     this.currentFrame = (this.currentFrame + 1) % this.maxFrames;
 
-    // Check if we completed a full cycle and should advance to next scene
-    if (this.currentFrame === 0 && this.imagers.length > 1) {
+    // Check if we just wrapped to frame 0 (completed a full cycle)
+    // If so, advance to next scene for the next render
+    if (this.currentFrame === 0) {
       this.advanceToNextScene();
     }
   }
