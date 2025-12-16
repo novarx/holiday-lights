@@ -27,4 +27,5 @@ export * from './scenes/allScenesLoader';
 
 // Scenes
 export * from './scenes/default.scene';
+export * from './scenes/rotating-square.scene';
 
