@@ -30,6 +30,7 @@ module.exports = {
   target: 'node',
   mode: isProduction ? 'production' : 'development',
   devtool: isProduction ? false : 'source-map',
+  externalsType: 'commonjs',
   output: {
     path: join(__dirname, '../../dist/apps/holiday-lights-service'),
     filename: 'main.js',
@@ -71,11 +72,13 @@ module.exports = {
     // First handle specific modules that must be external
     function({ request }, callback) {
       if (request === 'rpi-led-matrix') {
-        // Force this to be treated as an external commonjs module
-        return callback(null, 'commonjs rpi-led-matrix');
+        // Force this to be treated as an external module
+        console.log('Externalizing rpi-led-matrix');
+        return callback(null, 'rpi-led-matrix');
       }
       if (request === 'sharp') {
-        return callback(null, 'commonjs sharp');
+        console.log('Externalizing sharp');
+        return callback(null, 'sharp');
       }
       callback();
     },

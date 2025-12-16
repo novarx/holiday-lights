@@ -40,9 +40,9 @@ export class MatrixService {
       .fgColor(0xff0000)
       .fill()
 
-    matrixDefinition.forEach((cell, x, y) => {
-      matrix.fgColor(this.rgbToHex(cell.color)).setPixel(x, y)
-    })
+    // matrixDefinition.forEach((cell, x, y) => {
+    //   matrix.fgColor(this.rgbToHex(cell.color)).setPixel(x, y)
+    // })
 
     matrix.sync();
   }
