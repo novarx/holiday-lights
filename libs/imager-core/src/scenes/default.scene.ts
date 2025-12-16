@@ -50,6 +50,16 @@ export class DefaultScene implements Imager {
       );
   }
 
+  /**
+   * Generate the matrix for the current frame.
+   *
+   * @param frame - Frame number from 0 to 100 (representing 0 to 10 seconds at 10fps).
+   *                Use this for animations by calculating positions/colors based on the frame count.
+   *                The frame resets to 0 after reaching 100.
+   * @param previousMatrix - The matrix returned from the previous frame, or null for the first frame.
+   *                         You can modify and return this matrix for optimization, or create a new one.
+   * @returns A Matrix object representing the 64x64 LED display state for this frame.
+   */
   getMatrix(frame: number, previousMatrix: Matrix | null): Matrix {
     return this.imager.getMatrix(frame, previousMatrix);
   }
