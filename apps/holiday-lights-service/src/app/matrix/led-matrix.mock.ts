@@ -24,6 +24,27 @@ export enum RuntimeFlag {
   On = 1,
 }
 
+export enum MuxType {
+  Direct = 0,
+  Stripe = 1,
+  Checkered = 2,
+  Spiral = 3,
+  ZStripe = 4,
+  ZnMirrorZStripe = 5,
+  Coreman = 6,
+  Kaler2Scan = 7,
+  P10Z = 8,
+  QiangLiQ8 = 9,
+  InversedZStripe = 10,
+  P10Outdoor1R1G1_1 = 11,
+  P10Outdoor1R1G1_2 = 12,
+  P10Outdoor1R1G1_3 = 13,
+  P10CoremanMapper = 14,
+  P8Outdoor1R1G1 = 15,
+  FlippedStripe = 16,
+  P10Outdoor32x16HalfScan = 17,
+}
+
 export interface MatrixOptions {
   rows: number;
   cols: number;
