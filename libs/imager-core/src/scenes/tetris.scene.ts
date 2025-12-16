@@ -77,7 +77,7 @@ export class TetrisScene implements Imager {
     // Fill background
     for (let y = 0; y < 64; y++) {
       for (let x = 0; x < 64; x++) {
-        matrix.set(x, y, { color: 'rgb(10, 10, 20)', brightness: 255 });
+        matrix.set(x, y, { color: 'rgb(0, 0, 0)', brightness: 0 });
       }
     }
 

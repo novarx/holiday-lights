@@ -9,7 +9,7 @@ import { SceneRegistry } from '../lib/main/sceneRegistry';
  */
 export class RotatingSquareScene implements Imager {
   private readonly dimensions = Dimensions.square(64);
-  private readonly squareSize = 20; // Size of the square
+  private readonly squareSize = 35; // Size of the square
   private readonly centerX = 32;
   private readonly centerY = 32;
 
@@ -51,7 +51,7 @@ export class RotatingSquareScene implements Imager {
     }
 
     // Optional: Fill the square
-    this.fillSquare(matrix, rotatedCorners, 'rgb(0, 100, 150)');
+    this.fillSquare(matrix, rotatedCorners, 'rgb(0, 150, 200)');
 
     return matrix;
   }

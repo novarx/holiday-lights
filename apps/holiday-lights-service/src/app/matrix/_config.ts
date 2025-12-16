@@ -25,7 +25,7 @@ console.log('matrix options: ', JSON.stringify(matrixOptions, null, 2));
 
 export const runtimeOptions: RuntimeOptions = {
   ...LedMatrix.defaultRuntimeOptions(),
-  gpioSlowdown: 2,
+  gpioSlowdown: 1,
   dropPrivileges: RuntimeFlag.Off,
 };
 
